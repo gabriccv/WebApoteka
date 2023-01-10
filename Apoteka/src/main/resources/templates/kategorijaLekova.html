@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Kategorija Lekova</title>
+</head>
+<body>
+	<ul>    
+ 		<li><a href="kategorijeLekova">KategorijeLekova</a></li>    
+ 		  
+ 	</ul>  
+	<form method="post" action="kategorijeLekova/edit">
+		<input type="hidden" name="id" th:value="${kategorijaLekova.id}"/><!-- popuni value atribut vrednošću -->
+		<table class="forma">
+			<caption>Kategorija Lekova</caption>
+			<tr><th>Naziv:</th><td><input type="text" th:value="${kategorijaLekova.naziv}" name="naziv"/></td></tr>
+			<tr><th>Namena:</th><td><input type="text" th:value="${kategorijaLekova.namena}" name="namena"/></td></tr>
+			<tr><th>Opis:</th><td><input type="text" th:value="${kategorijaLekova.opis}" name="opis"/></td></tr>
+			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+		</table>
+	</form>
+	<form method="post" action="kategorijeLekova/delete">
+		<input type="hidden" name="id" th:value="${kategorijaLekova.id}"/>
+		<table class="forma">
+			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+		</table>
+	</form>
+	
+</body>
+</html>

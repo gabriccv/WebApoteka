@@ -1,0 +1,48 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<base th:href="@{/}">
+		<title>Knjige</title>
+		<link rel="stylesheet" type="text/css" href="css/StiloviTabela.css"/>
+		<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>
+	</head>
+	<body>
+		<ul>
+			<li><a href="knjige">Knjige</a></li>
+			<li><a href="clanskeKarte">Clanske karte</a></li>
+			<li><a href="korisnici">Korisnici</a></li>
+			</ul>
+		<table>
+			<caption>Zeljene njige</caption> 
+			<tr>
+				<th>Naziv</th>
+				<th>Registarski broj primerka</th>
+				<th>Jezik</th>
+				<th>Broj stranica</th>
+				<th></th>
+			</tr>
+			
+			<tr th:each="itKnjiga, status: ${knjige}">  
+ 				<td th:text="${itKnjiga.naziv}"></td>    
+ 				<td th:text="${itKnjiga.registarskiBrojPrimerka}"></td>    
+ 				<td th:text="${itKnjiga.jezik}"></td>    
+ 				<td class="broj" th:text="${itKnjiga.brojStranica}"></td>    
+ 				<td>
+					<form method="post" action="knjige/zeljene/ukloni">
+						<input type="hidden" name="idKnjige" th:value="${itKnjiga.id}">
+						<input type="submit" value="Ukloni iz zeljenih">
+					</form>
+				</td>  
+ 			</tr>
+		</table>
+		<br/>
+		<form method="post" action="clanskeKarte/izdajKnjige">
+			<table>
+			<caption>Izdaj knjige</caption>
+				<tr><th>Registarski broj clanske karte</th><td><input type="text" name="registarskiBroj"></td>
+				<tr><th></th><td><input type="submit" value="Izdaj"></td>
+			</table>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+		<title>Knjige</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 </head>     
+	 <body>   
+	 	<ul>     
+	 		<li><a href="knjige">Knjige</a></li>     
+	 		<li><a href="kategorijeLekova">Clanske karte</a></li>     
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 		<table>     
+	 			<caption>Knjige</caption>     
+	 			<tr>     
+	 				<th>R. br.</th>     
+	 				<th></th>     
+	 				<th>Naziv</th>     
+	 				<th>Registarski broj primerka</th>     
+	 				<th>Jezik</th>    
+	 				<th>Broj stranica</th>  
+	 				<th>Datum objavljivanja</th>    
+	 				<th></th>    
+	 			</tr>
+	 			<tr th:each="itKnjiga, status: ${knjige}">     
+	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
+	 				<td><a th:href="|knjige/details?id=${itKnjiga.id}|" th:text="${itKnjiga.naziv}"></a></td>    
+	 				<td th:text="${itKnjiga.naziv}"></td>    
+	 				<td th:text="${itKnjiga.registarskiBrojPrimerka}"></td>    
+	 				<td th:text="${itKnjiga.jezik}"></td>    
+	 				<td class="broj" th:text="${itKnjiga.brojStranica}"></td>    
+	 				<td th:text="${#temporals.format(itKnjiga.datum, 'dd.MM.yyy')}"></td>
+	 				<td>    
+	 					<form method="post" action="knjige/delete" >     
+	 						<input type="hidden"  name="id"  th:value="${itKnjiga.id}">     
+	 						<input type="submit"  value="Obriši" >    
+	 					</form>    
+	 				</td>   
+	 			</tr>
+	 		</table>
+	 	<ul>     
+	 		<li><a href="knjige/add">Dodaj knjigu</a></li>     
+	 	</ul>
+	 </body>   
+ </html>	

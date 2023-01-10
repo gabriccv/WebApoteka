@@ -1,0 +1,35 @@
+<!DOCTYPE html>    
+ <html xmlns:th="http://www.thymeleaf.org">    
+ <head>    
+ 	<meta charset="UTF-8">    
+ 	<base href="bURL">    
+ 	<title>Dodaj clansku kartu</title>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
+ </head>    
+ <body>    
+ 	<ul>    
+ 		<li><a href="knjige">Knjige</a></li>    
+ 		<li><a href="clanskeKarte">Clanske karte</a></li>    
+ 		<li><a href="korisnici">Korisnici</a></li>    
+ 	</ul>    
+ 	<form method="post" action="add">    
+ 		<table>    
+ 			<caption>Clanska karta</caption>    
+ 			<tr><th>Registarski broj:</th><td><input type="text" value="" name="registarskiBroj"/></td></tr>   
+ 			<tr>
+ 				<th>Korisnik:</th>
+				<td>
+					<select name = "idKorisnika">
+						<option th:each="itKorisnik: ${korisnici}" th:value="${itKorisnik.id}" th:text="|${itKorisnik.ime} ${itKorisnik.prezime} (${itKorisnik.email})|">
+						</option>
+					</select>
+					
+				</td>
+			</tr>     
+ 			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
+ 		</table>    
+ 	</form>   
+ 	<br/>  
+ </body>  
+ </html>  		

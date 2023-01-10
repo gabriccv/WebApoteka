@@ -1,0 +1,54 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+		<title>Clanska karta</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 </head>     
+	 <body>   
+	 	<ul>     
+	 		<li><a href="knjige">Knjige</a></li>     
+	 		<li><a href="clanskeKarte">Clanske karte</a></li>     
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 		<table>     
+	 			<caption>Clanska karta</caption>     
+	 			<tr>     
+	 				<th>Registarski broj</th> 
+	 				<td th:text="${clanskaKarta.registarskiBroj}"></td>     
+	 				  
+	 			</tr>
+	 			<tr>
+	 				<th>Vlasnik</th>
+	 				<td th:text="${clanskaKarta.korisnik}"></td>
+	 			</tr>
+	 		</table>
+	 		<table>     
+	 			<caption>Iznajmljene knjige</caption>     
+	 			<tr>  
+	 				<th>Naziv</th>     
+	 				<th>Registarski broj primerka</th>     
+	 				<th>Jezik</th>    
+	 				<th>Broj stranica</th>  
+	 				<th>Datum objavljivanja</th>  
+	 				<th></th>    
+	 			</tr>
+	 			<tr th:each="itKnjiga, status: ${clanskaKarta.iznajmljenjeKnjige}">
+	 				<td th:text="${itKnjiga.naziv}"></td>    
+	 				<td th:text="${itKnjiga.registarskiBrojPrimerka}"></td>    
+	 				<td th:text="${itKnjiga.jezik}"></td>    
+	 				<td class="broj" th:text="${itKnjiga.brojStranica}"></td>  
+	 				<td th:text="${#temporals.format(itKnjiga.datum, 'dd.MM.yyy')}"></td>  
+	 				<td>    
+	 					<form method="post" action="clanskeKarte/vratiKnjigu" >     
+	 						<input type="hidden"  name="idKnjige"  th:value="${itKnjiga.id}">
+							<input type="hidden" name="registarskiBroj" th:value="${clanskaKarta.registarskiBroj}">
+	 						<input type="submit"  value="Vrati knjigu" >    
+	 					</form>    
+	 				</td>   
+	 			</tr>
+	 		</table>
+	 </body>   
+ </html>	
