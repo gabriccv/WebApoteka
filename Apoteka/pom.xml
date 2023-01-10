@@ -156,16 +156,18 @@
 	</dependencies>
 
 	<build>
-			<finalName>PrviMavenVebProjekat</finalName>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-        				<mainClass>com.ftn.PrviMavenVebProjekat.PrviMavenVebApplication</mainClass>
-    					<excludeDevtools>false</excludeDevtools>
-    				</configuration>	
-				</plugin>
-			</plugins>
+		<finalName>PrviMavenVebProjekat</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.ftn.PrviMavenVebProjekat.PrviMavenVebProjekatApplication</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
+	
+	
+	
 </project>
