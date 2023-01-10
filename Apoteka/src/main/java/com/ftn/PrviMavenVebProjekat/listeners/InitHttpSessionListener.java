@@ -9,9 +9,9 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.springframework.stereotype.Component;
 
-import com.ftn.PrviMavenVebProjekat.controller.ClanskeKarteController;
-import com.ftn.PrviMavenVebProjekat.controller.KnjigeController;
-import com.ftn.PrviMavenVebProjekat.model.Knjiga;
+//import com.ftn.PrviMavenVebProjekat.controller.ClanskeKarteController;
+//import com.ftn.PrviMavenVebProjekat.controller.KnjigeController;
+//import com.ftn.PrviMavenVebProjekat.model.Knjiga;
 
 @Component
 public class InitHttpSessionListener implements HttpSessionListener {
@@ -21,15 +21,15 @@ public class InitHttpSessionListener implements HttpSessionListener {
 		System.out.println("Inicijalizacija sesisje HttpSessionListener...");
 //		
 //		//pri kreiranju sesije inicijalizujemo je ili radimo neke dodatne aktivnosti
-		List<Knjiga> zaIznajmljivanje = new ArrayList<Knjiga>();
-		String registarskiBrojCK = "";
-		HttpSession session  = arg0.getSession();
-		System.out.println("session id korisnika je "+session.getId());
-		session.setAttribute(KnjigeController.KNJIGE_ZA_IZNAJMLJIVANJE, zaIznajmljivanje);
+		//List<Knjiga> zaIznajmljivanje = new ArrayList<Knjiga>();
+		//String registarskiBrojCK = "";
+		//HttpSession session  = arg0.getSession();
+		//System.out.println("session id korisnika je "+session.getId());
+		//session.setAttribute(KnjigeController.KNJIGE_ZA_IZNAJMLJIVANJE, zaIznajmljivanje);
 		
-		session.setAttribute(ClanskeKarteController.CLANSKA_KARTA, registarskiBrojCK);
+		//session.setAttribute(ClanskeKarteController.CLANSKA_KARTA, registarskiBrojCK);
 //		
-		System.out.println("Uspeh HttpSessionListener!");
+		//System.out.println("Uspeh HttpSessionListener!");
 	}
 	
 	/** kod koji se izvrsava po brisanju sesije */
