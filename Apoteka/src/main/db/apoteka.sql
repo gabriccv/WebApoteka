@@ -21,5 +21,52 @@ CREATE TABLE kategorijeLekova (
 	PRIMARY KEY(id)
 );
 
+
+CREATE TABLE oblik (
+  id bigint NOT NULL AUTO_INCREMENT,
+  oblik ENUM('SIRUP', 'INJEKCIJA', 'TABLETA', 'KAPSULA') NOT NULL,
+  PRIMARY KEY (id)
+);   
+
+CREATE TABLE proizvodjac(
+	id BIGINT AUTO_INCREMENT,
+	naziv varchar(50)  NOT NULL,
+	drzava VARCHAR(3) NOT NULL,
+	PRIMARY KEY(id)
+	
+	);
+    
+
+CREATE TABLE lek (
+	id BIGINT AUTO_INCREMENT,
+	naziv VARCHAR(40) NOT NULL,
+	sifra VARCHAR(14) NOT NULL,
+	opis VARCHAR(100) NOT NULL,
+	kontraindikacije varchar(50) NULL,
+	oblik BIGINT NOT NULL,
+	prosekOcena FLOAT NOT NULL,
+	slika varchar(50)  NOT NULL,
+	dostupnaKolicina INT NOT NULL,
+	cena DOUBLE NOT NULL,
+	proizvodjac BIGINT NOT NULL,
+	kategorijaLeka BIGINT NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(oblik) REFERENCES oblik(id)
+		ON DELETE CASCADE,
+	FOREIGN KEY(proizvodjac) REFERENCES proizvodjac(id)
+		ON DELETE CASCADE,
+	FOREIGN KEY(kategorijaLeka) REFERENCES kategorijeLekova(id)
+		ON DELETE CASCADE
+);
+
+
 INSERT INTO kategorijeLekova(naziv,namena,opis) VALUES ('panadol', 'bolovi','2-3 dnevno');
+INSERT INTO proizvodjac (naziv,drzava) VALUES ('Mika','SRB');
+INSERT INTO oblik (oblik) VALUES ('TABLETA');
+INSERT INTO oblik (oblik) VALUES ('KAPSULA');
+INSERT INTO oblik (oblik) VALUES ('SIRUP');
+INSERT INTO oblik (oblik) VALUES ('INJEKCIJA');
+
+INSERT INTO lek (naziv,sifra,opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorijaLeka) VALUES ('brufenn','1554','opiss','samokontra',2,12.5,'slicica',3,20,1,1);
+
 

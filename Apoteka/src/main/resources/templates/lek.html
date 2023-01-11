@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Lek</title>
+</head>
+<body>
+	<ul>    
+ 		<li><a href="kategorijeLekova">KategorijeLekova</a></li> 
+ 		<li><a href="lekovi">Lekovi</a></li>   
+ 		<li><a href="proizvodjaci">Proizvodjaci</a></li>
+ 		
+ 		  
+ 	</ul>  
+	<form method="post" action="lekovi/edit">
+		<input type="hidden" name="id" th:value="${lek.id}"/><!-- popuni value atribut vrednošću -->
+		<table class="forma">
+			<caption>Lek</caption>
+			<tr><th>Naziv:</th><td><input type="text" th:value="${lek.naziv}" name="naziv"/></td></tr>
+			<tr><th>Sifra:</th><td><input type="text" th:value="${lek.sifra}" name="sifra"/></td></tr>
+			<tr><th>Opis:</th><td><input type="text" th:value="${lek.opis}" name="opis"/></td></tr>
+			<tr><th>Kontraindikacije:</th><td><input type="text" th:value="${lek.kontraindikacije}" name="kontraindikacije"/></td></tr>
+			<tr><th>Oblik:</th><td><input type="text" th:value="${lek.oblik}" name="oblik"/></td></tr>
+			<tr><th>Prosek ocena:</th><td><input type="text" th:value="${lek.prosekOcena}" name="prosekOcena"/></td></tr>
+			<tr><th>Slika:</th><td><input type="text" th:value="${lek.slika}" name="slika"/></td></tr>
+			<tr><th>Dostupna kolicina:</th><td><input type="text" th:value="${lek.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
+			<tr><th>Cena:</th><td><input type="text" th:value="${lek.cena}" name="cena"/></td></tr>
+			<tr><th>Proizvodjac:</th><td><input type="text" th:value="${lek.proizvodjac}" name="proizvodjac"/></td></tr>
+			<tr><th>Kategorija leka:</th><td><input type="text" th:value="${lek.kategorijaLekova}" name="kategorijaLekova"/></td></tr>
+			
+			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+		</table>
+	</form>
+	<form method="post" action="lekovi/delete">
+		<input type="hidden" name="id" th:value="${lek.id}"/>
+		<table class="forma">
+			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+		</table>
+	</form>
+	
+</body>
+</html>
