@@ -19,13 +19,39 @@
 			<tr><th>Sifra:</th><td><input type="text"  name="sifra"/></td></tr>
 			<tr><th>Opis:</th><td><input type="text" name="opis"/></td></tr>
 			<tr><th>Kontraindikacije:</th><td><input type="text"  name="kontraindikacije"/></td></tr>
-			<tr><th>Oblik:</th><td><input type="text" name="oblik"/></td></tr>
-			<tr><th>Prosek ocena:</th><td><input type="text" name="prosekOcena"/></td></tr>
+			<tr><th>Oblik:</th>
+				<td><select name="oblikId">
+    					<option th:each="item : ${session.oblici}"
+    						 th:value="${item.id}" 
+    						 th:selected="*{item.id}==3"
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
+				
+			<tr><th>Prosek ocena:</th><td><input type="number" name="prosekOcena"/></td></tr>
 			<tr><th>Slika:</th><td><input type="text" name="slika"/></td></tr>
-			<tr><th>Dostupna kolicina:</th><td><input type="text" name="dostupnaKolicina"/></td></tr>
-			<tr><th>Cena:</th><td><input type="text" name="cena"/></td></tr>
-			<tr><th>Proizvodjac:</th><td><input type="text" name="proizvodjac"/></td></tr>
-			<tr><th>Kategorija leka:</th><td><input type="text" name="kategorijaLekova"/></td></tr>
+			<tr><th>Dostupna kolicina:</th><td><input type="number" name="dostupnaKolicina"/></td></tr>
+			<tr><th>Cena:</th><td><input type="number" name="cena"/></td></tr>
+			<tr><th>Proizvodjac:</th>
+				<td><select name="proizvodjacId">
+    					<option th:each="item : ${session.proizvodjaci}"
+    						 th:value="${item.id}" 
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
+			<tr><th>Kategorija leka:</th>
+				<td><select name="kategorijaId">
+    					<option th:each="item : ${session.kategorijeLekova}"
+    						 th:value="${item.id}" 
+    						 
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
+				
+				</td></tr>
 			  
  			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
  		</table>    

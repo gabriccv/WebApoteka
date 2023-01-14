@@ -41,6 +41,7 @@ public class KategorijaLekovaDAOImpl implements KategorijaLekovaDAO{
 
 			KategorijaLekova kategorijaLekova = kategorijeLekova.get(id);
 			if (kategorijaLekova == null) {
+				System.out.println("naziv "+naziv);
 				kategorijaLekova = new KategorijaLekova(id, naziv, namena,opis);
 				kategorijeLekova.put(kategorijaLekova.getId(), kategorijaLekova); // dodavanje u kolekciju
 			}
@@ -54,6 +55,7 @@ public class KategorijaLekovaDAOImpl implements KategorijaLekovaDAO{
 	
 	@Override
 	public KategorijaLekova findOne(Long id) {
+		System.out.println(id);
 		String sql = 
 				"SELECT k.id, k.naziv, k.namena,k.opis FROM kategorijalekova k " + 
 				"WHERE k.id = ? " + 

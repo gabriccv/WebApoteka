@@ -23,8 +23,8 @@ CREATE TABLE kategorijeLekova (
 
 
 CREATE TABLE oblik (
-  id bigint NOT NULL AUTO_INCREMENT,
-  oblik ENUM('SIRUP', 'INJEKCIJA', 'TABLETA', 'KAPSULA') NOT NULL,
+  id BIGINT AUTO_INCREMENT,
+  naziv varchar(50)  NOT NULL,
   PRIMARY KEY (id)
 );   
 
@@ -62,11 +62,12 @@ CREATE TABLE lek (
 
 INSERT INTO kategorijeLekova(naziv,namena,opis) VALUES ('panadol', 'bolovi','2-3 dnevno');
 INSERT INTO proizvodjac (naziv,drzava) VALUES ('Mika','SRB');
-INSERT INTO oblik (oblik) VALUES ('TABLETA');
-INSERT INTO oblik (oblik) VALUES ('KAPSULA');
-INSERT INTO oblik (oblik) VALUES ('SIRUP');
-INSERT INTO oblik (oblik) VALUES ('INJEKCIJA');
+INSERT INTO oblik (naziv) VALUES ('TABLETA');
+INSERT INTO oblik (naziv) VALUES ('KAPSULA');
+INSERT INTO oblik (naziv) VALUES ('SIRUP');
+INSERT INTO oblik (naziv) VALUES ('INJEKCIJA');
 
 INSERT INTO lek (naziv,sifra,opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorijaLeka) VALUES ('brufenn','1554','opiss','samokontra',2,12.5,'slicica',3,20,1,1);
 
 
+insert INTO korisnici (ime,prezime,email,lozinka) VALUES('ja','sam','tina123@gmail.com','1234');

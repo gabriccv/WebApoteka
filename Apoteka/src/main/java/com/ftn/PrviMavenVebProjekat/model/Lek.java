@@ -7,7 +7,7 @@ public class Lek{
 	 private String sifra;
 	 private String opis;
 	 private String kontraindikacije;
-	 private ObliciLeka oblik;
+	 private Oblik oblik;
 	 private float prosekOcena;
 	 private String slika;
 	 private int dostupnaKolicina;
@@ -21,7 +21,7 @@ public class Lek{
 	 }
 
 
-	public Lek(String naziv, String sifra, String opis, String kontraindikacije, ObliciLeka oblik, float prosekOcena,
+	public Lek(String naziv, String sifra, String opis, String kontraindikacije, Oblik oblik, float prosekOcena,
 			String slika, int dostupnaKolicina, double cena, Proizvodjac proizvodjac,
 			KategorijaLekova kategorijaLekova) {
 		super();
@@ -38,7 +38,7 @@ public class Lek{
 		this.kategorijaLekova = kategorijaLekova;
 	}
 	
-	public Lek(Long id,String naziv, String sifra, String opis, String kontraindikacije, ObliciLeka oblik, float prosekOcena,
+	public Lek(Long id,String naziv, String sifra, String opis, String kontraindikacije, Oblik oblik, float prosekOcena,
 			String slika, int dostupnaKolicina, double cena, Proizvodjac proizvodjac,
 			KategorijaLekova kategorijaLekova) {
 		super();
@@ -108,12 +108,12 @@ public class Lek{
 	}
 
 
-	public ObliciLeka getOblik() {
+	public Oblik getOblik() {
 		return oblik;
 	}
 
 
-	public void setOblik(ObliciLeka oblik) {
+	public void setOblik(Oblik oblik) {
 		this.oblik = oblik;
 	}
 

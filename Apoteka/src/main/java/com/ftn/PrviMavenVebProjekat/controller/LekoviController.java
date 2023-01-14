@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,8 +24,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ftn.PrviMavenVebProjekat.model.KategorijaLekova;
 import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.ObliciLeka;
+import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
+import com.ftn.PrviMavenVebProjekat.service.KategorijaLekovaService;
 import com.ftn.PrviMavenVebProjekat.service.LekService;
+import com.ftn.PrviMavenVebProjekat.service.OblikService;
+import com.ftn.PrviMavenVebProjekat.service.ProizvodjacService;
+
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 
 
 
@@ -38,6 +48,12 @@ public class LekoviController implements ServletContextAware {
 	
 	@Autowired
 	private LekService lekService;
+	
+	@Autowired
+	private KategorijaLekovaService kategorijaLekovaService;
+	
+	@Autowired
+	private OblikService oblikService;
 	
 	/** inicijalizacija podataka za kontroler */
 	@PostConstruct
@@ -62,16 +78,40 @@ public class LekoviController implements ServletContextAware {
 	
 	@GetMapping(value="/add")
 	public String create(HttpSession session, HttpServletResponse response){
+		List<Proizvodjac> proizvodjaci=proizvodjacService.findAll();
+		
+		session.setAttribute("proizvodjaci", proizvodjaci);
+		
+		List<Oblik> oblici = oblikService.findAll();
+		session.setAttribute("oblici", oblici);
+		
+		List<KategorijaLekova> kategorijeLekova= kategorijaLekovaService.findAll();
+		session.setAttribute("kategorijeLekova", kategorijeLekova);
 		return "dodavanjeLekova"; // stranica za dodavanje knjige
+		
 	}
-
+	
+	@Autowired
+	private ProizvodjacService proizvodjacService;
+	
+	
+	
+	
 	/** obrada podataka forme za unos novog entiteta, post zahtev */
 	// POST: knjige/add
 	@SuppressWarnings("unused")
 	@PostMapping(value="/add")
-	public void create(@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,@RequestParam String kontraindikacije,@RequestParam ObliciLeka oblik,@RequestParam float prosekOcena,
-			@RequestParam String slika,@RequestParam int dostupnaKolicina,@RequestParam double cena,@RequestParam Proizvodjac proizvodjac,
-			@RequestParam KategorijaLekova kategorijaLekova,  HttpServletResponse response) throws IOException {		
+	public void create(@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,@RequestParam String kontraindikacije,
+			@RequestParam(value = "oblikId") @PathVariable("id") Long oblikId,@RequestParam float prosekOcena,
+			@RequestParam String slika,@RequestParam int dostupnaKolicina,@RequestParam double cena,
+			@RequestParam(value = "proizvodjacId") @PathVariable("id") Long proizvodjacId,
+		    @RequestParam(value = "kategorijaId",required=false) @PathVariable("id") Long kategorijaLekovaId,
+		    HttpServletResponse response) throws IOException {	
+		
+	    Proizvodjac proizvodjac = proizvodjacService.findOne(proizvodjacId);
+	    KategorijaLekova kategorijaLekova = kategorijaLekovaService.findOne(kategorijaLekovaId);
+	    Oblik oblik = oblikService.findOne(oblikId);
+
 		Lek lek = new Lek(naziv, sifra, opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorijaLekova);
 		Lek saved = lekService.save(lek);
 		response.sendRedirect(bURL+"lekovi");
@@ -81,7 +121,7 @@ public class LekoviController implements ServletContextAware {
 	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
-	public void Edit(@RequestParam Long id,@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,@RequestParam String kontraindikacije,@RequestParam ObliciLeka oblik,@RequestParam float prosekOcena,
+	public void Edit(@RequestParam Long id,@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,@RequestParam String kontraindikacije,@RequestParam Oblik oblik,@RequestParam float prosekOcena,
 			@RequestParam String slika,@RequestParam int dostupnaKolicina,@RequestParam double cena,@RequestParam Proizvodjac proizvodjac,
 			@RequestParam KategorijaLekova kategorijaLekova,  HttpServletResponse response) throws IOException {	
 		Lek lek = lekService.findOne(id);
@@ -132,11 +172,17 @@ public class LekoviController implements ServletContextAware {
 	@ResponseBody
 	public ModelAndView details(@RequestParam Long id) {	
 		Lek lek = lekService.findOne(id);
-		
+		List<Proizvodjac> proizvodjaci=proizvodjacService.findAll();
+		List<Oblik> oblici=oblikService.findAll();
+		List<KategorijaLekova> kategorijeLekova=kategorijaLekovaService.findAll();
+		System.out.println(lek.getOblik().toString());
 		// podaci sa nazivom template-a
 		ModelAndView rezultat = new ModelAndView("lek"); // naziv template-a
 		rezultat.addObject("lek", lek); // podatak koji se šalje template-u
-
+		rezultat.addObject("oblici", oblici);
+		rezultat.addObject("proizvodjaci", proizvodjaci);
+		rezultat.addObject("kategorijeLekova", kategorijeLekova);
+		
 		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
 	}
 	

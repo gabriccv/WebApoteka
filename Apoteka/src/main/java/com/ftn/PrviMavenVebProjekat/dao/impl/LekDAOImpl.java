@@ -19,10 +19,17 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ftn.PrviMavenVebProjekat.dao.LekDAO;
+import com.ftn.PrviMavenVebProjekat.dao.ProizvodjacDAO;
 import com.ftn.PrviMavenVebProjekat.model.KategorijaLekova;
 import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.ObliciLeka;
+import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
+import com.ftn.PrviMavenVebProjekat.service.KategorijaLekovaService;
+import com.ftn.PrviMavenVebProjekat.service.OblikService;
+import com.ftn.PrviMavenVebProjekat.service.ProizvodjacService;
+
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
 
 
@@ -31,6 +38,15 @@ public class LekDAOImpl implements LekDAO{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	@Autowired
+	private ProizvodjacService proizvodjacService;
+	
+	@Autowired
+	private KategorijaLekovaService kategorijaLekovaService;
+	
+	@Autowired
+	private OblikService oblikService;
+	
 	private class LekRowCallBackHandler implements RowCallbackHandler {
 
 		private Map<Long, Lek> lekovi = new LinkedHashMap<>();
@@ -38,31 +54,36 @@ public class LekDAOImpl implements LekDAO{
 		@Override
 		public void processRow(ResultSet resultSet) throws SQLException {
 			int index = 1;
+			
 			Long id = resultSet.getLong(index++);
 			String naziv = resultSet.getString(index++);
 			String sifra = resultSet.getString(index++);
 			String opis = resultSet.getString(index++);
 			String kontraindikacije = resultSet.getString(index++);
-			String oblikString = resultSet.getString(index++);
+			
+			
+			Long oblikId = resultSet.getLong(index++);
+			Oblik oblik=oblikService.findOne(oblikId);
+			
 			float prosekOcena = resultSet.getFloat(index++);
 			String slika = resultSet.getString(index++);
 			int dostupnaKolicina = resultSet.getInt(index++);
 			double cena = resultSet.getDouble(index++);
 			
-			Proizvodjac proizvodjac = new Proizvodjac();
-			String proizvodjacName = resultSet.getString(index++);
-			proizvodjac.setNaziv(proizvodjacName);
 			
-			KategorijaLekova kategorija = new KategorijaLekova();
-			String kategorijaNaziv = resultSet.getString(index++);
-			kategorija.setNaziv(kategorijaNaziv);
+			Long proizvodjacId = resultSet.getLong(index++);
+			Proizvodjac proizvodjac=proizvodjacService.findOne(proizvodjacId);
+			
+			
+			Long kategorijaId = resultSet.getLong(index++);
+			KategorijaLekova kategorijaLekova=kategorijaLekovaService.findOne(kategorijaId);
 
 			
 			
 
 			Lek lek = lekovi.get(id);
 			if (lek == null) {
-				lek = new Lek(id, naziv, sifra,opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorija);
+				lek = new Lek(id, naziv, sifra,opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorijaLekova);
 				lekovi.put(lek.getId(), lek); // dodavanje u kolekciju
 			}
 		}
@@ -76,8 +97,8 @@ public class LekDAOImpl implements LekDAO{
 	@Override
 	public Lek findOne(Long id) {
 		String sql = 
-				"SELECT * FROM lek l " + 
-				"WHERE l.id = ? " + 
+				"SELECT * FROM lek l"
+				+ " WHERE (l.id=?) " + 
 				"ORDER BY l.id";
 
 		LekRowCallBackHandler rowCallbackHandler = new LekRowCallBackHandler();
@@ -89,8 +110,7 @@ public class LekDAOImpl implements LekDAO{
 	@Override
 	public List<Lek> findAll() {
 		String sql = 
-				"SELECT * FROM lek l " +  
-						"ORDER BY l.id";
+				"SELECT * FROM lek" ;
 
 		LekRowCallBackHandler rowCallbackHandler = new LekRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
@@ -105,7 +125,8 @@ public class LekDAOImpl implements LekDAO{
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO lek (naziv, sifra,opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,proizvodjac) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+				String sql = "INSERT INTO lek (naziv, sifra,opis,kontraindikacije,"
+						+ "oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorijaLeka) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -113,13 +134,13 @@ public class LekDAOImpl implements LekDAO{
 				preparedStatement.setString(index++, lek.getSifra());
 				preparedStatement.setString(index++, lek.getOpis());
 				preparedStatement.setString(index++, lek.getKontraindikacije());
-				preparedStatement.setString(index++, lek.getOblik().name());
+				preparedStatement.setLong(index++, lek.getOblik().getId());
 				preparedStatement.setFloat(index++, lek.getProsekOcena());
 				preparedStatement.setString(index++, lek.getSlika());
 				preparedStatement.setInt(index++, lek.getDostupnaKolicina());
 				preparedStatement.setDouble(index++, lek.getCena());
-				preparedStatement.setString(index++, lek.getProizvodjac().getNaziv());
-				preparedStatement.setString(index++, lek.getKategorijaLekova().getNaziv());
+				preparedStatement.setLong(index++, lek.getProizvodjac().getId());
+				preparedStatement.setLong(index++, lek.getKategorijaLekova().getId());
 
 
 				return preparedStatement;
@@ -130,18 +151,7 @@ public class LekDAOImpl implements LekDAO{
 		boolean uspeh = jdbcTemplate.update(preparedStatementCreator, keyHolder) == 1;
 		return uspeh?1:0;
 	}
-	private Long id;
-	 private String naziv;
-	 private String sifra;
-	 private String opis;
-	 private String kontraindikacije;
-	 private ObliciLeka oblik;
-	 private float prosekOcena;
-	 private String slika;
-	 private int dostupnaKolicina;
-	 private double cena;
-	 private Proizvodjac proizvodjac;
-	 private KategorijaLekova kategorijaLekova;
+	
 	@Transactional
 	@Override
 	public int update(Lek lek) {

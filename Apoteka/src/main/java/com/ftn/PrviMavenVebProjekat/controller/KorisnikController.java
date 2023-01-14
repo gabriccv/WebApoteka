@@ -139,7 +139,7 @@ public class KorisnikController implements ServletContextAware {
 
 		session.setAttribute(KORISNIK_KEY, korisnik);
 
-		response.sendRedirect(bURL + "knjige");
+		response.sendRedirect(bURL + "lekovi");
 	}
 	
 	@GetMapping(value="/logout")

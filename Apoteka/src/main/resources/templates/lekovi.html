@@ -12,6 +12,7 @@
 	 		<li><a href="kategorijeLekova">KategorijeLekova</a></li> 
 	 		<li><a href="lekovi">Lekovi</a></li>   
 	 		<li><a href="proizvodjaci">Proizvodjaci</a></li>
+	 		<li><a href="korisnici/logout">Odjavi se</a></li>
  		  
 	 		  
 	 	</ul>     
@@ -41,13 +42,13 @@
 	 				<td th:text="${itLek.sifra}"></td>    
 	 				<td th:text="${itLek.opis}"></td>   
 	 				<td th:text="${itLek.kontraindikacije}"></td> 
-	 				<td th:text="${itLek.oblik}"></td>
+	 				<td th:text="${itLek.oblik.naziv}"></td>
 	 				<td th:text="${itLek.prosekOcena}"></td>
 	 				<td th:text="${itLek.slika}"></td>
 	 				<td th:text="${itLek.dostupnaKolicina}"></td>
 	 				<td th:text="${itLek.cena}"></td>
-	 				<td th:text="${itLek.proizvodjac}"></td>
-	 				<td th:text="${itLek.kategorijaLekova}"></td>
+	 				<td th:text="${itLek.proizvodjac.naziv}"></td>
+	 				<td th:text="${itLek.kategorijaLekova.naziv}"></td>
 	 				<td>    
 	 					<form method="post" action="lekovi/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itLek.id}">     

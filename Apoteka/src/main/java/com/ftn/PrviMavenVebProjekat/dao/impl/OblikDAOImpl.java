@@ -18,80 +18,78 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ftn.PrviMavenVebProjekat.dao.ProizvodjacDAO;
-import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
+import com.ftn.PrviMavenVebProjekat.dao.OblikDAO;
+import com.ftn.PrviMavenVebProjekat.model.Oblik;
 
 @Repository
-public class ProizvodjacDAOImpl implements ProizvodjacDAO{
+public class OblikDAOImpl implements OblikDAO{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private class ProizvodjacRowCallBackHandler implements RowCallbackHandler {
+	private class OblikRowCallBackHandler implements RowCallbackHandler {
 
-		private Map<Long, Proizvodjac> proizvodjaci = new LinkedHashMap<>();
+		private Map<Long, Oblik> oblici = new LinkedHashMap<>();
 		
 		@Override
 		public void processRow(ResultSet resultSet) throws SQLException {
 			int index = 1;
 			Long id = resultSet.getLong(index++);
 			String naziv = resultSet.getString(index++);
-			String drzava = resultSet.getString(index++);
+
 			
 
 
-			Proizvodjac proizvodjac = proizvodjaci.get(id);
-			if (proizvodjac == null) {
-				
-				proizvodjac = new Proizvodjac(id, naziv, drzava);
-				proizvodjaci.put(proizvodjac.getId(), proizvodjac); // dodavanje u kolekciju
+			Oblik oblik = oblici.get(id);
+			if (oblik == null) {
+				oblik = new Oblik(id, naziv);
+				oblici.put(oblik.getId(), oblik); // dodavanje u kolekciju
 			}
 		}
 
-		public List<Proizvodjac> getProizvodjaci() {
-			return new ArrayList<>(proizvodjaci.values());
+		public List<Oblik> getOblici() {
+			return new ArrayList<>(oblici.values());
 		}
 
 	}
 	
 	@Override
-	public Proizvodjac findOne(Long id) {
-		
+	public Oblik findOne(Long id) {
 		String sql = 
-				"SELECT p.id, p.naziv, p.drzava FROM proizvodjac p " + 
-				"WHERE p.id = ? " + 
-				"ORDER BY p.id";
+				"SELECT o.id, o.naziv FROM oblik o " + 
+				"WHERE o.id = ? " + 
+				"ORDER BY o.id";
 
-		ProizvodjacRowCallBackHandler rowCallbackHandler = new ProizvodjacRowCallBackHandler();
+		OblikRowCallBackHandler rowCallbackHandler = new OblikRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, id);
-		
-		return rowCallbackHandler.getProizvodjaci().get(0);
+
+		return rowCallbackHandler.getOblici().get(0);
 	}
 
 	@Override
-	public List<Proizvodjac> findAll() {
+	public List<Oblik> findAll() {
 		String sql = 
-				"SELECT p.id, p.naziv, p.drzava FROM proizvodjac p " +  
-						"ORDER BY p.id";
+				"SELECT o.id, o.naziv FROM oblik o " +  
+						"ORDER BY o.id";
 
-		ProizvodjacRowCallBackHandler rowCallbackHandler = new ProizvodjacRowCallBackHandler();
+		OblikRowCallBackHandler rowCallbackHandler = new OblikRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
 
-		return rowCallbackHandler.getProizvodjaci();
+		return rowCallbackHandler.getOblici();
 	}
 	
 	@Transactional
 	@Override
-	public int save(Proizvodjac proizvodjac) {
+	public int save(Oblik oblik) {
 		PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO proizvodjac (naziv, drzava) VALUES (?,?)";
+				String sql = "INSERT INTO oblik (naziv) VALUES (?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
-				preparedStatement.setString(index++, proizvodjac.getNaziv());
-				preparedStatement.setString(index++, proizvodjac.getDrzava());
+				preparedStatement.setString(index++, oblik.getNaziv());
+				
 				
 
 				return preparedStatement;
@@ -105,9 +103,9 @@ public class ProizvodjacDAOImpl implements ProizvodjacDAO{
 	
 	@Transactional
 	@Override
-	public int update(Proizvodjac proizvodjac) {
-		String sql = "UPDATE proizvodjac SET naziv = ?, drzava = ? WHERE id = ?";	
-		boolean uspeh = jdbcTemplate.update(sql, proizvodjac.getNaziv() , proizvodjac.getDrzava(),proizvodjac.getId()) == 1;
+	public int update(Oblik oblik) {
+		String sql = "UPDATE oblik SET naziv = ? WHERE id = ?";	
+		boolean uspeh = jdbcTemplate.update(sql, oblik.getNaziv() ,oblik.getId()) == 1;
 		
 		return uspeh?1:0;
 	}
@@ -115,7 +113,7 @@ public class ProizvodjacDAOImpl implements ProizvodjacDAO{
 	@Transactional
 	@Override
 	public int delete(Long id) {
-		String sql = "DELETE FROM proizvodjac WHERE id = ?";
+		String sql = "DELETE FROM oblik WHERE id = ?";
 		return jdbcTemplate.update(sql, id);
 	}
 

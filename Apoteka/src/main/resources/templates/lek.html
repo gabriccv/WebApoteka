@@ -23,13 +23,40 @@
 			<tr><th>Sifra:</th><td><input type="text" th:value="${lek.sifra}" name="sifra"/></td></tr>
 			<tr><th>Opis:</th><td><input type="text" th:value="${lek.opis}" name="opis"/></td></tr>
 			<tr><th>Kontraindikacije:</th><td><input type="text" th:value="${lek.kontraindikacije}" name="kontraindikacije"/></td></tr>
-			<tr><th>Oblik:</th><td><input type="text" th:value="${lek.oblik}" name="oblik"/></td></tr>
+			<tr><th>Oblik:</th>
+				<td>
+					<select name="oblikId">
+    					<option th:each="item : ${oblici}"
+    						 th:value="${item.id}" 
+    						 th:selected="*{item.id == lek.oblik.id}"
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
 			<tr><th>Prosek ocena:</th><td><input type="text" th:value="${lek.prosekOcena}" name="prosekOcena"/></td></tr>
 			<tr><th>Slika:</th><td><input type="text" th:value="${lek.slika}" name="slika"/></td></tr>
 			<tr><th>Dostupna kolicina:</th><td><input type="text" th:value="${lek.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
 			<tr><th>Cena:</th><td><input type="text" th:value="${lek.cena}" name="cena"/></td></tr>
-			<tr><th>Proizvodjac:</th><td><input type="text" th:value="${lek.proizvodjac}" name="proizvodjac"/></td></tr>
-			<tr><th>Kategorija leka:</th><td><input type="text" th:value="${lek.kategorijaLekova}" name="kategorijaLekova"/></td></tr>
+			<tr><th>Proizvodjac:</th>
+				<td>
+					<select name="proizvodjacId">
+    					<option th:each="item : ${proizvodjaci}"
+    						 th:value="${item.id}" 
+    						 th:selected="*{item.id == lek.proizvodjac.id}"
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
+			<tr><th>Kategorija leka:</th>
+				<td>
+					<select name="kategorijaId">
+    					<option th:each="item : ${kategorijeLekova}"
+    						 th:value="${item.id}" 
+    						 th:selected="*{item.id == lek.kategorijaLekova.id}"
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
 			
 			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
 		</table>
