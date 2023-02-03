@@ -8,22 +8,23 @@
 	<title>Lek</title>
 </head>
 <body>
-	<ul>    
- 		<li><a href="kategorijeLekova">KategorijeLekova</a></li> 
- 		<li><a href="lekovi">Lekovi</a></li>   
- 		<li><a href="proizvodjaci">Proizvodjaci</a></li>
+	<ul> 
+	 	<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+   
+	 	<li><a href="lekovi"  th:text="#{lekovi}"></a></li>   
+ 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
  		
  		  
  	</ul>  
 	<form method="post" action="lekovi/edit">
 		<input type="hidden" name="id" th:value="${lek.id}"/><!-- popuni value atribut vrednošću -->
 		<table class="forma">
-			<caption>Lek</caption>
-			<tr><th>Naziv:</th><td><input type="text" th:value="${lek.naziv}" name="naziv"/></td></tr>
-			<tr><th>Sifra:</th><td><input type="text" th:value="${lek.sifra}" name="sifra"/></td></tr>
-			<tr><th>Opis:</th><td><input type="text" th:value="${lek.opis}" name="opis"/></td></tr>
-			<tr><th>Kontraindikacije:</th><td><input type="text" th:value="${lek.kontraindikacije}" name="kontraindikacije"/></td></tr>
-			<tr><th>Oblik:</th>
+			<caption th:text="#{lek}"></caption>
+			<tr><th th:text="#{naziv}"></th><td><input type="text" th:value="${lek.naziv}" name="naziv"/></td></tr>
+			<tr><th th:text="#{lozinka}"></th><td><input type="text" th:value="${lek.sifra}" name="sifra"/></td></tr>
+			<tr><th th:text="#{opis}"></th><td><input type="text" th:value="${lek.opis}" name="opis"/></td></tr>
+			<tr><th th:text="#{kontraindikacije}"></th><td><input type="text" th:value="${lek.kontraindikacije}" name="kontraindikacije"/></td></tr>
+			<tr><th th:text="#{oblik}"></th>
 				<td>
 					<select name="oblikId">
     					<option th:each="item : ${oblici}"
@@ -33,11 +34,11 @@
     					</option>
 					</select>
 				</td></tr>
-			<tr><th>Prosek ocena:</th><td><input type="text" th:value="${lek.prosekOcena}" name="prosekOcena"/></td></tr>
-			<tr><th>Slika:</th><td><input type="text" th:value="${lek.slika}" name="slika"/></td></tr>
-			<tr><th>Dostupna kolicina:</th><td><input type="text" th:value="${lek.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
-			<tr><th>Cena:</th><td><input type="text" th:value="${lek.cena}" name="cena"/></td></tr>
-			<tr><th>Proizvodjac:</th>
+			<tr><th th:text="#{prosek_ocena}"></th><td><input type="text" th:value="${lek.prosekOcena}" name="prosekOcena"/></td></tr>
+			<tr><th th:text="#{slika}"></th><td><input type="text" th:value="${lek.slika}" name="slika"/></td></tr>
+			<tr><th th:text="#{dostupna_kolicina}"></th><td><input type="text" th:value="${lek.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
+			<tr><th th:text="#{cena}"></th><td><input type="text" th:value="${lek.cena}" name="cena"/></td></tr>
+			<tr><th th:text="#{proizvodjac}"></th>
 				<td>
 					<select name="proizvodjacId">
     					<option th:each="item : ${proizvodjaci}"
@@ -47,9 +48,9 @@
     					</option>
 					</select>
 				</td></tr>
-			<tr><th>Kategorija leka:</th>
+			<tr><th th:text="#{kategorija_leka}"></th>
 				<td>
-					<select name="kategorijaId">
+					<select name="kategorijaLekovaId">
     					<option th:each="item : ${kategorijeLekova}"
     						 th:value="${item.id}" 
     						 th:selected="*{item.id == lek.kategorijaLekova.id}"
@@ -58,13 +59,13 @@
 					</select>
 				</td></tr>
 			
-			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+			<tr><th></th><td><input type="submit" th:value="#{izmeni}"/></td></tr>
 		</table>
 	</form>
 	<form method="post" action="lekovi/delete">
 		<input type="hidden" name="id" th:value="${lek.id}"/>
 		<table class="forma">
-			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+			<tr><th></th><td><input type="submit" th:value="#{obrisi}" /></td></tr>
 		</table>
 	</form>
 	

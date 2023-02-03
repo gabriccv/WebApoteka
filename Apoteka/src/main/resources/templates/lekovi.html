@@ -6,32 +6,59 @@
 		<title>Lekovi</title>     
 		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
 	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+		</script>
 	 </head>     
 	 <body>   
+	 	<script type="text/javascript">
+		$(document).ready(function() {
+		    $("#locales").change(function () {
+		        var selectedOption = $('#locales').val();
+		        if (selectedOption != ''){
+		            window.location.replace('international?lang=' + selectedOption);
+		        }
+		    });
+		});
+		</script>
+<!-- 	 	<table th:unless="${session.korisnik==null"> -->
+<!-- 	 		<tr><th>Prijavljeni ste kao</th><td><a -->
+<!-- 	 	</table> -->
 	 	<ul>     
-	 		<li><a href="kategorijeLekova">KategorijeLekova</a></li> 
-	 		<li><a href="lekovi">Lekovi</a></li>   
-	 		<li><a href="proizvodjaci">Proizvodjaci</a></li>
-	 		<li><a href="korisnici/logout">Odjavi se</a></li>
+	 		<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+	 		<li><a href="kategorijeLekova"  th:text="#{kategorije_lekova}"></a></li> 
+	 		<li><a href="lekovi"  th:text="#{lekovi}"></a></li>   
+	 		<li><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
+	 		<li><a href="korisnici"  th:text="#{korisnici}"></a></li>
+	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
  		  
 	 		  
-	 	</ul>     
+	 	</ul>  
+	 	
+	 	<form action="lekovi" method="get">
+	 		<span th:text="#{lang.change}"></span>:
+			<select id="locales">
+			    <option value=""></option>
+			    <option value="en" th:text="#{lang.eng}"></option>
+			    <option value="sr" th:text="#{lang.sr}"></option>
+			</select>
+			<button th:value="#{prevedi}"></button>
+	 	</form>
 	 		<table>     
-	 			<caption>Lekovi</caption>     
+	 			<caption th:text="#{lekovi}"></caption>     
 	 			<tr>     
-	 				<th>R. br.</th>     
+	 				<th th:text="#{broj}"></th>     
 	 				<th></th>     
-	 				<th>Naziv</th>     
-	 				<th>Sifra</th>     
-	 				<th>Opis</th>    
-	 				<th>Kontraindikacije</th> 
-	 				<th>Oblik</th> 
-	 				<th>Prosek ocena</th> 
-	 				<th>Slika</th> 
-	 				<th>Dostupna kolicina</th>
-	 				<th>Cena</th> 
-	 				<th>Proizvodjac</th> 
-	 				<th>Kategorija Leka</th> 
+	 				<th th:text="#{naziv}"></th>     
+	 				<th th:text="#{lozinka}"></th>     
+	 				<th th:text="#{opis}"></th>    
+	 				<th th:text="#{kontraindikacije}"></th> 
+	 				<th th:text="#{oblik}"></th> 
+	 				<th th:text="#{prosek_ocena}"></th> 
+	 				<th th:text="#{slika}"></th> 
+	 				<th th:text="#{dostupna_kolicina}"></th>
+	 				<th th:text="#{cena}"></th> 
+	 				<th th:text="#{proizvodjac}"></th> 
+	 				<th th:text="#{kategorija_leka}"></th> 
 	 				
 	 				<th></th>    
 	 			</tr>
@@ -52,13 +79,14 @@
 	 				<td>    
 	 					<form method="post" action="lekovi/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itLek.id}">     
-	 						<input type="submit"  value="Obriši" >    
+	 						<input type="submit"  th:value="#{obrisi}"  >    
 	 					</form>    
 	 				</td>   
 	 			</tr>
 	 		</table>
 	 	<ul>     
-	 		<li><a href="lekovi/add">Dodaj lek</a></li>     
+	 		<li><a href="lekovi/add" th:text="#{dodaj_lek}"></a></li>     
 	 	</ul>
+	 	
 	 </body>   
  </html>	

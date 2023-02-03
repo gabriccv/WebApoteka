@@ -12,10 +12,24 @@
 	<form method="post" action="korisnici/registracija">
 		<table>
 			<caption>Registracija</caption>
+			<tr><th>Korisnicko ime:</th><td><input type="text" value="" name="korisnickoIme" required/></td></tr>
+			<tr><th>Lozinka:</th><td><input type="text" value="" name="lozinka" required/></td></tr>
+			<tr><th>Email:</th><td><input type="text" value="" name="email" required/></td></tr>
 			<tr><th>Ime:</th><td><input type="text" value="" name="ime" required/></td></tr>
 			<tr><th>Prezime:</th><td><input type="text" value="" name="prezime" required/></td></tr>
-			<tr><th>Email:</th><td><input type="text" value="" name="email" required/></td></tr>
-			<tr><th>Šifra:</th><td><input type="password" value="" name="sifra" required/></td></tr>
+			<tr><th>Datum rodjenja:</th><td><input type="date" value="" name="datumRodjenja" required/></td></tr>
+			<tr><th>Adresa:</th><td><input type="text" value="" name="adresa" required/></td></tr>
+			<tr><th>Datum i vreme registracije:</th><td><input type="date" value="" name="datumIVremeRegistracije" required/></td></tr>
+			<tr><th>Uloga:</th>
+				<td><select name="ulogaId">
+    					<option th:each="item : ${session.uloge}"
+    						 th:value="${item.id}" 
+    						 th:selected="*{item.id}==3"
+    						 th:text="${item.naziv}">
+    					</option>
+					</select>
+				</td></tr>
+
 			<tr><th></th><td><input type="submit" value="Registruj se" /></td>
 		</table>
 	</form>

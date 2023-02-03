@@ -9,7 +9,7 @@ public interface KorisnikDAO {
 	
 	public Korisnik findOne(String email); 
 	
-	public Korisnik findOne(String email, String sifra);
+	public Korisnik findOne(String email, String lozinka);
 
 	public List<Korisnik> findAll();
 

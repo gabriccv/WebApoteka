@@ -4,13 +4,22 @@ USE apoteka;
 
 CREATE TABLE korisnici (
 	id BIGINT AUTO_INCREMENT,
+	korisnickoIme VARCHAR(30) NOT NULL,
+    lozinka VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL,
 	ime VARCHAR(20),
 	prezime VARCHAR(20),
-	email VARCHAR(20) NOT NULL,
-	lozinka VARCHAR(20) NOT NULL,
+	datumRodjenja date,
+    adresa VARCHAR(50),
+    brojTelefona VARCHAR(15),
+    datumIVremeRegistracije datetime,
+    uloga BIGINT NOT NULL,
+    FOREIGN KEY(uloga) REFERENCES uloge(id)
+		ON DELETE CASCADE,
 	PRIMARY KEY(id)
 
 );
+
 
 
 CREATE TABLE kategorijeLekova (
@@ -58,7 +67,14 @@ CREATE TABLE lek (
 	FOREIGN KEY(kategorijaLeka) REFERENCES kategorijeLekova(id)
 		ON DELETE CASCADE
 );
-
+CREATE TABLE uloge (
+  id BIGINT AUTO_INCREMENT,
+  naziv varchar(50)  NOT NULL,
+  PRIMARY KEY (id)
+);   
+insert into uloge(naziv) values ('KUPAC');
+insert into uloge(naziv) values ('APOTEKAR');
+insert into uloge(naziv) values ('ADMINISTRATOR');
 
 INSERT INTO kategorijeLekova(naziv,namena,opis) VALUES ('panadol', 'bolovi','2-3 dnevno');
 INSERT INTO proizvodjac (naziv,drzava) VALUES ('Mika','SRB');
@@ -69,5 +85,6 @@ INSERT INTO oblik (naziv) VALUES ('INJEKCIJA');
 
 INSERT INTO lek (naziv,sifra,opis,kontraindikacije,oblik,prosekOcena,slika,dostupnaKolicina,cena,proizvodjac,kategorijaLeka) VALUES ('brufenn','1554','opiss','samokontra',2,12.5,'slicica',3,20,1,1);
 
+insert into korisnici(korisnickoIme,lozinka,email,ime,prezime,datumRodjenja,adresa,brojTelefona,datumIVremeRegistracije,uloga)
+ values ("maja12",123,"maja@gmail.com","Maja","Majic",'1999-04-17',"Novosadska 34","063/985-85-12",now(),1);
 
-insert INTO korisnici (ime,prezime,email,lozinka) VALUES('ja','sam','tina123@gmail.com','1234');

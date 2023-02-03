@@ -86,6 +86,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			
 		</dependency>
 		
 		<dependency>
@@ -153,8 +154,9 @@
         	<artifactId>jquery-ui</artifactId>
         	<version>1.12.1</version>
     	</dependency> 
+	
 	</dependencies>
-
+	
 	<build>
 		<finalName>PrviMavenVebProjekat</finalName>
 		<plugins>

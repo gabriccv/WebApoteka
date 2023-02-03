@@ -1,0 +1,28 @@
+<!DOCTYPE html>    
+ <html>    
+ <head>    
+ 	<meta charset="UTF-8">    
+ 	<base href="bURL">    
+ 	<title>Dodaj proizvodjaca</title>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
+ </head>    
+ <body>    
+ 	<ul>  
+   
+ 			<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+	 		<li><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
+	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
+ 		  
+ 	</ul>    
+ 	<form method="post" action="add">    
+ 		<table>    
+ 			<caption th:text="#{proizvodjaci}"></caption>    
+ 			<tr><th th:text="#{naziv}">:</th><td><input type="text" value="" name="naziv"/></td></tr>    
+ 			<tr><th th:text="#{drzava}">:</th><td><input type="text" value="" name="drzava"/></td></tr> 
+ 			<tr><th></th><td><input type="submit" th:value="#{dodaj_proizvodjaca}"/></td>    
+ 		</table>    
+ 	</form>   
+ 	<br/>  
+ </body>  
+ </html>  		

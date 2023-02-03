@@ -155,8 +155,11 @@ public class LekDAOImpl implements LekDAO{
 	@Transactional
 	@Override
 	public int update(Lek lek) {
-		String sql = "UPDATE lek SET naziv = ?, sifra = ? , opis=?, kontraindikacije=?, oblik=?, prosekOcena=?, slika=?, dostupnaKolicina=?, cena=?, proizvodjac=?, kategorijaLekova=? WHERE id = ?";	
-		boolean uspeh = jdbcTemplate.update(sql, lek.getNaziv() , lek.getSifra(), lek.getOpis(),lek.getKontraindikacije(),lek.getOblik(), lek.getProsekOcena(),lek.getSlika(),lek.getDostupnaKolicina(),lek.getCena(),lek.getProizvodjac(), lek.getKategorijaLekova(), lek.getId()) == 1;
+		String sql = "UPDATE lek SET naziv = ?, sifra = ? , opis=?, kontraindikacije=?, oblik=?, prosekOcena=?, slika=?,"
+				+ " dostupnaKolicina=?, cena=?, proizvodjac=?, kategorijaLeka=? WHERE id = ?";	
+		boolean uspeh = jdbcTemplate.update(sql, lek.getNaziv() , lek.getSifra(), lek.getOpis(),lek.getKontraindikacije(),
+				lek.getOblik().getId(), lek.getProsekOcena(),lek.getSlika(),lek.getDostupnaKolicina(),lek.getCena(),lek.getProizvodjac().getId(),
+				lek.getKategorijaLekova().getId(), lek.getId()) == 1;
 		
 		return uspeh?1:0;
 	}

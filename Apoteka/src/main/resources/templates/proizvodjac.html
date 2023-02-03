@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Proizvodjac</title>
+</head>
+<body>
+	<ul>    
+ 		<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+	 		<li><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
+	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li> 
+ 		  
+ 	</ul>  
+	<form method="post" action="proizvodjaci/edit">
+		<input type="hidden" name="id" th:value="${proizvodjac.id}"/><!-- popuni value atribut vrednošću -->
+		<table class="forma">
+			<caption th:text="#{proizvodjac}"></caption>
+			<tr><th th:text="#{naziv}"></th><td><input type="text" th:value="${proizvodjac.naziv}" name="naziv"/></td></tr>
+			<tr><th th:text="#{drzava}"></th><td><input type="text" th:value="${proizvodjac.drzava}" name="drzava"/></td></tr>
+			<tr><th></th><td><input type="submit" th:value="#{izmeni}"/></td></tr>
+		</table>
+	</form>
+	<form method="post" action="proizvodjaci/delete">
+		<input type="hidden" name="id" th:value="${proizvodjac.id}"/>
+		<table class="forma">
+			<tr><th></th><td><input type="submit" th:value="#{obrisi}" /></td></tr>
+		</table>
+	</form>
+	
+</body>
+</html>

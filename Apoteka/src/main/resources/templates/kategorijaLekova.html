@@ -9,23 +9,26 @@
 </head>
 <body>
 	<ul>    
- 		<li><a href="kategorijeLekova">KategorijeLekova</a></li>    
+	 	<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+
+	 	<li><a href="kategorijeLekova"  th:text="#{kategorije_lekova}"></a></li> 
+ 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li> 
  		  
  	</ul>  
 	<form method="post" action="kategorijeLekova/edit">
 		<input type="hidden" name="id" th:value="${kategorijaLekova.id}"/><!-- popuni value atribut vrednošću -->
 		<table class="forma">
-			<caption>Kategorija Lekova</caption>
-			<tr><th>Naziv:</th><td><input type="text" th:value="${kategorijaLekova.naziv}" name="naziv"/></td></tr>
-			<tr><th>Namena:</th><td><input type="text" th:value="${kategorijaLekova.namena}" name="namena"/></td></tr>
-			<tr><th>Opis:</th><td><input type="text" th:value="${kategorijaLekova.opis}" name="opis"/></td></tr>
-			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+			<caption th:text="#{kategorija_leka}"></caption>
+			<tr><th th:text="#{naziv}">:</th><td><input type="text" th:value="${kategorijaLekova.naziv}" name="naziv"/></td></tr>
+			<tr><th th:text="#{namena}">:</th><td><input type="text" th:value="${kategorijaLekova.namena}" name="namena"/></td></tr>
+			<tr><th th:text="#{opis}">:</th><td><input type="text" th:value="${kategorijaLekova.opis}" name="opis"/></td></tr>
+			<tr><th></th><td><input type="submit" th:value="#{izmeni}"/></td></tr>
 		</table>
 	</form>
 	<form method="post" action="kategorijeLekova/delete">
 		<input type="hidden" name="id" th:value="${kategorijaLekova.id}"/>
 		<table class="forma">
-			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+			<tr><th></th><td><input type="submit" th:value="#{obrisi}" /></td></tr>
 		</table>
 	</form>
 	

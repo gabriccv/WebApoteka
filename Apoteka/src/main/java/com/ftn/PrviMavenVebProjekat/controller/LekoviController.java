@@ -22,11 +22,13 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ftn.PrviMavenVebProjekat.model.KategorijaLekova;
+import com.ftn.PrviMavenVebProjekat.model.Korisnik;
 import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.ObliciLeka;
 import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
 import com.ftn.PrviMavenVebProjekat.service.KategorijaLekovaService;
+import com.ftn.PrviMavenVebProjekat.service.KorisnikService;
 import com.ftn.PrviMavenVebProjekat.service.LekService;
 import com.ftn.PrviMavenVebProjekat.service.OblikService;
 import com.ftn.PrviMavenVebProjekat.service.ProizvodjacService;
@@ -55,6 +57,9 @@ public class LekoviController implements ServletContextAware {
 	@Autowired
 	private OblikService oblikService;
 	
+	@Autowired
+	private KorisnikService korisnikService;
+	
 	/** inicijalizacija podataka za kontroler */
 	@PostConstruct
 	public void init() {	
@@ -69,9 +74,9 @@ public class LekoviController implements ServletContextAware {
 	@GetMapping
 	public ModelAndView index() {
 		List<Lek> lekovi = lekService.findAll();
-		
 		ModelAndView rezultat = new ModelAndView("lekovi"); // naziv template-a
-		rezultat.addObject("lekovi", lekovi); // podatak koji se šalje template-u
+		rezultat.addObject("lekovi", lekovi);
+		// podatak koji se šalje template-u
 
 		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
 	}
@@ -121,9 +126,11 @@ public class LekoviController implements ServletContextAware {
 	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
-	public void Edit(@RequestParam Long id,@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,@RequestParam String kontraindikacije,@RequestParam Oblik oblik,@RequestParam float prosekOcena,
-			@RequestParam String slika,@RequestParam int dostupnaKolicina,@RequestParam double cena,@RequestParam Proizvodjac proizvodjac,
-			@RequestParam KategorijaLekova kategorijaLekova,  HttpServletResponse response) throws IOException {	
+	public void Edit(@RequestParam Long id,@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,
+			@RequestParam String kontraindikacije,@RequestParam Long oblikId,@RequestParam float prosekOcena,
+			@RequestParam String slika,@RequestParam int dostupnaKolicina,@RequestParam double cena,
+			@RequestParam Long proizvodjacId,
+			@RequestParam Long kategorijaLekovaId,  HttpServletResponse response) throws IOException {	
 		Lek lek = lekService.findOne(id);
 		if(lek != null) {
 			if(naziv != null && !naziv.trim().equals(""))
@@ -134,8 +141,11 @@ public class LekoviController implements ServletContextAware {
 				lek.setOpis(opis);
 			if(kontraindikacije != null && !kontraindikacije.trim().equals(""))
 				lek.setKontraindikacije(kontraindikacije);
-			if (oblik != null) 
+			if (oblikId!= null) 
+			{
+				Oblik oblik=oblikService.findOne(oblikId);
 			    lek.setOblik(oblik);
+			}
 			if(prosekOcena >0.00 )
 				lek.setProsekOcena(prosekOcena);
 			if(slika != null && !slika.trim().equals(""))
@@ -144,10 +154,18 @@ public class LekoviController implements ServletContextAware {
 				lek.setDostupnaKolicina(dostupnaKolicina);
 			if(cena >0 )
 				lek.setCena(cena);
-			if(proizvodjac != null )
+			if(proizvodjacId != null )
+			{
+				Proizvodjac proizvodjac=proizvodjacService.findOne(proizvodjacId);
+
 				lek.setProizvodjac(proizvodjac);
-			if(kategorijaLekova != null)
-				lek.setKategorijaLekova(kategorijaLekova);
+			}
+			if(kategorijaLekovaId != null)
+				{
+					KategorijaLekova kategorijaLekova=kategorijaLekovaService.findOne(kategorijaLekovaId);
+					lek.setKategorijaLekova(kategorijaLekova);
+				}
+				
 			
 
 
@@ -175,7 +193,6 @@ public class LekoviController implements ServletContextAware {
 		List<Proizvodjac> proizvodjaci=proizvodjacService.findAll();
 		List<Oblik> oblici=oblikService.findAll();
 		List<KategorijaLekova> kategorijeLekova=kategorijaLekovaService.findAll();
-		System.out.println(lek.getOblik().toString());
 		// podaci sa nazivom template-a
 		ModelAndView rezultat = new ModelAndView("lek"); // naziv template-a
 		rezultat.addObject("lek", lek); // podatak koji se šalje template-u
