@@ -28,9 +28,9 @@
 			<tr><th th:text="#{adresa}">:</th><td><input type="text" th:value="${korisnik.adresa}" name="adresa"/></td></tr>
 			<tr><th th:text="#{broj_telefona}">:</th><td><input type="text" th:value="${korisnik.brojTelefona}" name="brojTelefona"/></td></tr>
 			<tr><th th:text="#{datum_registracije}">:</th><td><input type="date" th:value="${korisnik.datumIVremeRegistracije}" name="datumIVremeRegistracije"/></td></tr>
-			<tr><th th:text="#{uloga}">:</th>
+			<tr><th th:text="#{uloga}"  >:</th>
 				<td>
-					<select name="ulogaId">
+					<select name="ulogaId" >
     					<option th:each="item : ${uloge}"
     						 th:value="${item.id}" 
     						 th:selected="*{item.id == korisnik.uloga.id}"

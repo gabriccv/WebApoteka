@@ -1,6 +1,7 @@
 package com.ftn.PrviMavenVebProjekat.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -72,18 +73,51 @@ public class LekoviController implements ServletContextAware {
 	} 
 	
 	@GetMapping
-	public ModelAndView index() {
-		List<Lek> lekovi = lekService.findAll();
-		ModelAndView rezultat = new ModelAndView("lekovi"); // naziv template-a
-		rezultat.addObject("lekovi", lekovi);
-		// podatak koji se šalje template-u
+	public ModelAndView index( @RequestParam (required=false) String naziv,@RequestParam (required=false) String kategorijaLeka,
+			@RequestParam (required=false) String donjaCena,@RequestParam (required=false) String gornjaCena,@RequestParam (required=false) String proizvodjac,
+			@RequestParam (required=false) String kontraindikacije,@RequestParam (required=false) String opis,
+			@RequestParam (required=false) String oblik,@RequestParam (required=false) String prosekOcena) {
+			System.out.println("naziv " + naziv);
+		List<Lek> lekovi=new ArrayList<Lek>();
+		 if(naziv==null && kategorijaLeka==null && (donjaCena==null && gornjaCena==null) && proizvodjac==null && kontraindikacije==null && opis==null
+				 && oblik==null && prosekOcena==null) {
+			lekovi = lekService.findAll();
+			
+			}
+		 else {
+			 System.out.println("usao");
+			 double dcena = 0;
 
+			 if (donjaCena != null) {
+			     dcena = Double.parseDouble(donjaCena);
+			 }
+			 
+			 double gcena = 0;
+
+			 if (gornjaCena != null) {
+			     gcena = Double.parseDouble(gornjaCena);
+			 }
+			 
+			 float fprosekOcena = 0;
+
+			 if (prosekOcena != null) {
+				 fprosekOcena= Float.parseFloat(prosekOcena);
+			 }
+
+			 lekovi = lekService.findByQuery(naziv,kategorijaLeka,dcena,gcena,proizvodjac,kontraindikacije,opis,oblik,fprosekOcena);
+				
+			 
+		 }
+		// podatak koji se šalje template-u
+		 ModelAndView rezultat = new ModelAndView("lekovi"); // naziv template-a
+		rezultat.addObject("lekovi", lekovi);
 		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
 	}
 	
 	@GetMapping(value="/add")
 	public String create(HttpSession session, HttpServletResponse response){
 		List<Proizvodjac> proizvodjaci=proizvodjacService.findAll();
+		
 		
 		session.setAttribute("proizvodjaci", proizvodjaci);
 		
@@ -103,7 +137,7 @@ public class LekoviController implements ServletContextAware {
 	
 	
 	/** obrada podataka forme za unos novog entiteta, post zahtev */
-	// POST: knjige/add
+	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/add")
 	public void create(@RequestParam String naziv,@RequestParam String sifra,@RequestParam String opis,@RequestParam String kontraindikacije,

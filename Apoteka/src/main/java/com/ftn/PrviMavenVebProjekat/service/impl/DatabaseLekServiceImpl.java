@@ -38,6 +38,13 @@ public class DatabaseLekServiceImpl implements LekService {
 		lekDAO.update(lek);
 		return lek;
 	}
+	
+	@Override
+	public List<Lek> findByQuery(String naziv,String kategorijaLeka,double donjaCena,double gornjaCena, String proizvodjac,String kontraindikacije,
+			String opis,String oblik,float prosekOcena){
+		return lekDAO.findByQuery(naziv,kategorijaLeka, donjaCena, gornjaCena,proizvodjac,kontraindikacije,opis,oblik,prosekOcena);
+	}
+	
 
 	@Override
 	public Lek delete(Long id) {

@@ -28,12 +28,39 @@
 	 		<li><a href="kategorijeLekova"  th:text="#{kategorije_lekova}"></a></li> 
 	 		<li><a href="lekovi"  th:text="#{lekovi}"></a></li>   
 	 		<li><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
-	 		<li><a href="korisnici"  th:text="#{korisnici}"></a></li>
+	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="korisnici"  th:text="#{korisnici}"></a></li>
+	 		
 	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
  		  
 	 		  
 	 	</ul>  
-	 	
+<!-- 	 	<form method="get"> -->
+<!-- <!-- 			<table class="tabela"> --> -->
+<!-- 			<table> -->
+<!-- 				<caption>Lekovi</caption> -->
+<!-- 				<tr> -->
+<!-- 					<th>r. br.</th> -->
+<!-- 					<th>naziv</th> -->
+<!-- 					<th>žanr</th> -->
+<!-- 					<th>trajanje</th> -->
+<!-- 					<th></th> -->
+<!-- 				</tr> -->
+<!-- 				<tr> -->
+				
+			<form method="get" action="lekovi">
+				<table>
+					<tr>
+						<th th:text="#{naziv}">:</th>
+						<th th:text="#{kontraindikacije}"></th>
+					</tr>
+					<tr>
+						<td><input type="text"  name="naziv"/></td></tr>
+						<td><input type="text"  name="kontraindikacije"/></td></tr>
+					</tr>
+					<tr><th></th><td><input type="submit" th:value="#{pretrazi}"/></td> 
+				</table>
+			</form>
+				
 	 	<form action="lekovi" method="get">
 	 		<span th:text="#{lang.change}"></span>:
 			<select id="locales">
@@ -43,6 +70,7 @@
 			</select>
 			<button th:value="#{prevedi}"></button>
 	 	</form>
+	 	
 	 		<table>     
 	 			<caption th:text="#{lekovi}"></caption>     
 	 			<tr>     

@@ -118,6 +118,88 @@ public class LekDAOImpl implements LekDAO{
 		return rowCallbackHandler.getLekovi();
 	}
 	
+	@Override
+	public List<Lek> findByQuery(String naziv,String kategorijaLeka,double donjaCena,double gornjaCena, String proizvodjac,String kontraindikacije,
+			String opis,String oblik,float prosekOcena){
+		String sql="SELECT l.* FROM lek l ,proizvodjac p,kategorijaLekova k, oblik o where ";
+		int i = 0;
+		if (naziv != null) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.naziv like '%"+naziv+"%' )";
+			i=+1;
+			
+		}
+		if(kategorijaLeka !=null){
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.kategorijaLeka=k.id and k.naziv like '%"+kategorijaLeka+"%' ) ";
+			i=+1;
+		}
+		
+		if (donjaCena > 0 && gornjaCena>donjaCena) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.cena between "+donjaCena+" and "+gornjaCena+")";
+			i=+1;
+		}
+		
+		if (proizvodjac != null) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.proizvodjac=p.id and p.naziv like '%"+proizvodjac+"%' )";
+			i=+1;
+		}
+		
+		if (kontraindikacije != null) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.kontraindikacije like '%"+kontraindikacije+"%' )";
+			i=+1;
+		}
+		
+		if (opis != null) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.opis like '%"+opis+"%' )";
+			i=+1;
+			
+		}
+		if (oblik != null) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.oblik=o.id and o.naziv like '%"+oblik+"%')";
+			i=+1;
+		}
+		
+		if (prosekOcena != 0) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(l.prosekOcena >="+prosekOcena+" )";
+			i=+1;
+		}
+		System.out.println(sql);
+		LekRowCallBackHandler rowCallbackHandler = new LekRowCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler);
+		return rowCallbackHandler.getLekovi();
+	}
+	
 	@Transactional
 	@Override
 	public int save(Lek lek) {

@@ -149,17 +149,18 @@ public class KorisnikController implements ServletContextAware {
 //			out.write(retVal.toString());
 //			return;
 //		}
-		System.out.println(email);
-		System.out.println(lozinka);
+		
 		Korisnik korisnik = korisnikService.findOne(email, lozinka);
 		  if (korisnik == null) {
 			  System.out.println("ovde");
 		  }
-		  System.out.println(korisnik);
+		  
 		  session.setAttribute("korisnik", korisnik);
 		  
 		  response.sendRedirect(bURL + "lekovi");
-		  System.out.println(korisnik);
+		  
+			System.out.println(korisnik.getUloga().getNaziv());
+
 //		session.setAttribute(KORISNIK_KEY, korisnik);
 //
 //		response.sendRedirect(bURL + "lekovi");
