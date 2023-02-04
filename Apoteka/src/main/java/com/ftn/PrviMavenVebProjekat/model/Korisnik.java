@@ -34,6 +34,21 @@ public class Korisnik {
 		this.uloga = uloga;
 	}
 	
+	public Korisnik(String korisnickoIme, String lozinka, String email, String ime, String prezime, Date datumRodjenja, String adresa,
+			String brojTelefona, Date datumIVremeRegistracije) {
+		super();
+		this.korisnickoIme = korisnickoIme;
+		this.lozinka = lozinka;
+		this.email = email;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.datumRodjenja = datumRodjenja;
+		this.adresa = adresa;
+		this.brojTelefona = brojTelefona;
+		this.datumIVremeRegistracije = datumIVremeRegistracije;
+		
+	}
+	
 	public Korisnik(Long id, String korisnickoIme, String lozinka, String email, String ime, String prezime, Date datumRodjenja, String adresa,
 			String brojTelefona, Date datumIVremeRegistracije,Uloga uloga) {
 		super();

@@ -135,7 +135,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 				;
 				
 				String sql = "INSERT INTO korisnici (korisnickoIme, lozinka, email, ime,prezime,datumRodjenja,adresa, brojTelefona, "
-						+ "datumIVremeRegistracije,uloga) VALUES (?, ?, ?, ?,?,?,?,?,?,?)";
+						+ "datumIVremeRegistracije) VALUES (?, ?, ?, ?,?,?,?,?,now())";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -147,8 +147,8 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 				preparedStatement.setDate(index++, korisnik.getDatumRodjenja());
 				preparedStatement.setString(index++, korisnik.getAdresa());
 				preparedStatement.setString(index++, korisnik.getBrojTelefona());
-				preparedStatement.setDate(index++, korisnik.getDatumIVremeRegistracije());
-				preparedStatement.setLong(index++, korisnik.getUloga().getId());
+//				preparedStatement.setDate(index++, korisnik.getDatumIVremeRegistracije());
+//				preparedStatement.setLong(index++, korisnik.getUloga().getId());
 
 				return preparedStatement;
 			}

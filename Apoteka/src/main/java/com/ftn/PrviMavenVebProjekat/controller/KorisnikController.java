@@ -237,12 +237,12 @@ public class KorisnikController implements ServletContextAware {
 			@RequestParam(required = true) String ime, @RequestParam(required = true) String prezime, 
 			@RequestParam(required = true) Date datumRodjenja,@RequestParam(required = true) String adresa,
 			@RequestParam(required = true) String brojTelefona,@RequestParam(required = true) Date datumIVremeRegistracije,
-			@RequestParam(value = "ulogaId") @PathVariable("id") Long ulogaId,
+			
 			HttpSession session, HttpServletResponse response) throws IOException {
 
-	    Uloga uloga = ulogaService.findOne(ulogaId);
+	   
  
-		Korisnik korisnik = new Korisnik(korisnickoIme,lozinka, email, ime,prezime,datumRodjenja,adresa,brojTelefona,datumIVremeRegistracije,uloga);
+		Korisnik korisnik = new Korisnik(korisnickoIme,lozinka, email, ime,prezime,datumRodjenja,adresa,brojTelefona,datumIVremeRegistracije);
 		korisnikService.save(korisnik);
 		
 		response.sendRedirect(bURL + "korisnici");
