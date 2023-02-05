@@ -25,6 +25,7 @@ import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.ObliciLeka;
 import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
+import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
 import com.ftn.PrviMavenVebProjekat.service.KategorijaLekovaService;
 import com.ftn.PrviMavenVebProjekat.service.OblikService;
 import com.ftn.PrviMavenVebProjekat.service.ProizvodjacService;
@@ -256,6 +257,15 @@ public class LekDAOImpl implements LekDAO {
 	public int delete(Long id) {
 		String sql = "DELETE FROM lek WHERE id = ?";
 		return jdbcTemplate.update(sql, id);
+	}
+
+	@Override
+	public void smanjivanjeKolicineLeka(StavkaRacuna stavka) {
+		int prodataKolicina=stavka.getKolicina();
+		Long idLeka=stavka.getLek().getId();
+		String sql = "UPDATE lek SET dostupnaKolicina=dostupnaKolicina-"+prodataKolicina+" WHERE lek.id="+idLeka ;
+		jdbcTemplate.update(sql);
+		
 	}
 
 }

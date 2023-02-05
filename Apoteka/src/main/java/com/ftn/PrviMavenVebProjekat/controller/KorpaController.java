@@ -2,6 +2,7 @@ package com.ftn.PrviMavenVebProjekat.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -40,6 +41,9 @@ public class KorpaController implements ServletContextAware {
 	@Autowired
 	private RacunService racunService;
 	
+	@Autowired
+	private LekService lekService;
+	
 	/** inicijalizacija podataka za kontroler */
 	@PostConstruct
 	public void init() {	
@@ -77,11 +81,17 @@ public class KorpaController implements ServletContextAware {
 			racun.setId((long) racunId);
 			for(StavkaRacuna stavka:listaStavki) {
 				stavka.setRacun(racun);
-				racunService.sacuvajStavku(stavka);
+				int sacuvanaStavka=racunService.sacuvajStavku(stavka);
+				if(sacuvanaStavka==1) {
+					lekService.smanjivanjeKolicineLeka(stavka);
+				}
 			}
 		}
 		
 		try {
+			ArrayList<StavkaRacuna> stavkeKorpe=new ArrayList<StavkaRacuna>();
+
+			  session.setAttribute("stavkeKorpe", stavkeKorpe);
 			response.sendRedirect(bURL+"racuni");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

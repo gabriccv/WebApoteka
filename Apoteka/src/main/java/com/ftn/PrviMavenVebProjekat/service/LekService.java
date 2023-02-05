@@ -3,6 +3,7 @@ package com.ftn.PrviMavenVebProjekat.service;
 import java.util.List;
 
 import com.ftn.PrviMavenVebProjekat.model.Lek;
+import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
 
 public interface LekService {
 	Lek findOne(Long id); 
@@ -13,4 +14,5 @@ public interface LekService {
 	Lek save(Lek lek); 
 	Lek update(Lek lek); 
 	Lek delete(Long id); 
+	void smanjivanjeKolicineLeka(StavkaRacuna stavka);
 }

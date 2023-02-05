@@ -59,10 +59,10 @@
 					</select>
 				</td></tr>
 			
-			<tr><th></th><td><input type="submit" th:value="#{izmeni}"/></td></tr>
+			<tr th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><th></th><td><input type="submit" th:value="#{izmeni}"/></td></tr>
 		</table>
 	</form>
-	<form method="post" action="lekovi/delete">
+	<form method="post" action="lekovi/delete" th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}">
 		<input type="hidden" name="id" th:value="${lek.id}"/>
 		<table class="forma">
 			<tr><th></th><td><input type="submit" th:value="#{obrisi}" /></td></tr>

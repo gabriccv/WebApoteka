@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.PrviMavenVebProjekat.dao.LekDAO;
 import com.ftn.PrviMavenVebProjekat.model.Lek;
+import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
 import com.ftn.PrviMavenVebProjekat.service.LekService;
 
 
@@ -31,6 +32,11 @@ public class DatabaseLekServiceImpl implements LekService {
 	public Lek save(Lek lek) {
 		lekDAO.save(lek);
 		return lek;
+	}
+	
+	@Override
+	public void smanjivanjeKolicineLeka(StavkaRacuna stavka) {
+		lekDAO.smanjivanjeKolicineLeka(stavka);
 	}
 
 	@Override
