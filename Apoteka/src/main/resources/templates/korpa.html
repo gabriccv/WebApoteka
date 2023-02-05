@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Korpa</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+		</script>
+</head>
+<body>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		  const cene=document.getElementsByClassName('cena')
+		  let ukupnaCena=0
+		  for(i=0;i<cene.length;i++){
+			  const cena=parseInt(cene[i].innerText)
+			  ukupnaCena+=cena
+		  }
+		  document.getElementById('cenaRacuna').value=ukupnaCena
+		  
+
+		});
+	</script>
+	<ul>    
+	 	<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+	 	<li><a href="lekovi"  th:text="#{lekovi}"></a></li> 
+ 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li> 
+ 		  
+ 	</ul>  
+	</br></br></br></br>
+	<form method="post" action="korpa/kupovina">
+		<table>
+			<tr th:each="stavka, status: ${listaStavki}">   
+				<th th:text="${stavka.lek.naziv}"></th>
+				<th th:text="${stavka.kolicina}"></th>
+				<th th:text="${stavka.cena}" class="cena"></th>
+			</tr>
+		</table>
+			<input type="submit" value="kupovina"/>
+	</form>
+	<div>
+		<p>Cena:</p>
+		<input id="cenaRacuna" readonly>
+	</div>
+
+</body>
+</html>

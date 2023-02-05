@@ -1,6 +1,8 @@
 package com.ftn.PrviMavenVebProjekat.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import com.ftn.PrviMavenVebProjekat.model.Racun;
 
 public class Korisnik {
 	
@@ -15,6 +17,7 @@ public class Korisnik {
 	private String brojTelefona;
 	private Date datumIVremeRegistracije;
 	private Uloga uloga;
+	private ArrayList<Racun> racuni;
 	
 	public Korisnik() {}
 	
@@ -65,6 +68,16 @@ public class Korisnik {
 		this.uloga = uloga;
 	}
 	
+	public ArrayList<Racun> getRacuni() {
+		return racuni;
+	}
+
+
+	public void setRacuni(ArrayList<Racun> racuni) {
+		this.racuni = racuni;
+	}
+
+
 	public String getKorisnickoIme() {
 		return korisnickoIme;
 	}

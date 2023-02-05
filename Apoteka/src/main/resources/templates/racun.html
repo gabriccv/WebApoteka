@@ -1,0 +1,32 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+		<title>Racuni</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+		</script>
+	 </head>     
+	 <body>  
+	 	<ul>
+	 		<li><a href="lekovi"  th:text="#{lekovi}"></a></li>
+	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
+	 	</ul>
+	 	<table>     
+	 			<caption th:text="#{racun}" ></caption>     
+	 			<tr>     
+	 				<th th:text="#{datum}"></th>        
+	 				<th th:text="#{cena}"></th>      
+	 			</tr>
+	 			<tr th:each="Racun, status: ${listaRacuna}">      
+	 				<td th:text="${Racun.datum}"></td>    
+	 				<td th:text="${Racun.cena}"></td>    
+	 				
+	 			</tr>
+	 		</table>
+	 
+	 
+	 </body>
+	 </html>

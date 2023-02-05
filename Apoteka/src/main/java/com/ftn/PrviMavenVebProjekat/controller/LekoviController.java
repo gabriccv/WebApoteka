@@ -28,6 +28,7 @@ import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.ObliciLeka;
 import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
+import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
 import com.ftn.PrviMavenVebProjekat.service.KategorijaLekovaService;
 import com.ftn.PrviMavenVebProjekat.service.KorisnikService;
 import com.ftn.PrviMavenVebProjekat.service.LekService;
@@ -76,8 +77,25 @@ public class LekoviController implements ServletContextAware {
 	public ModelAndView index( @RequestParam (required=false) String naziv,@RequestParam (required=false) String kategorijaLeka,
 			@RequestParam (required=false) String donjaCena,@RequestParam (required=false) String gornjaCena,@RequestParam (required=false) String proizvodjac,
 			@RequestParam (required=false) String kontraindikacije,@RequestParam (required=false) String opis,
-			@RequestParam (required=false) String oblik,@RequestParam (required=false) String prosekOcena) {
-			System.out.println("naziv " + naziv);
+			@RequestParam (required=false) String oblik,@RequestParam (required=false) String prosekOcena,HttpSession session) {
+//		List<Proizvodjac> proizvodjaci=proizvodjacService.findAll();
+//		
+//		
+//		session.setAttribute("proizvodjaci", proizvodjaci);
+		
+		List<Oblik> oblici = oblikService.findAll();
+	
+
+		session.setAttribute("oblici", oblici);
+		System.out.println(session.getAttribute("oblici"));
+		
+//		List<KategorijaLekova> kategorijeLekova= kategorijaLekovaService.findAll();
+//		session.setAttribute("kategorijeLekova", kategorijeLekova);
+			System.out.println(naziv);
+			System.out.println(kategorijaLeka);
+			System.out.println(gornjaCena);
+			System.out.println(donjaCena);
+			
 		List<Lek> lekovi=new ArrayList<Lek>();
 		 if(naziv==null && kategorijaLeka==null && (donjaCena==null && gornjaCena==null) && proizvodjac==null && kontraindikacije==null && opis==null
 				 && oblik==null && prosekOcena==null) {
@@ -88,19 +106,19 @@ public class LekoviController implements ServletContextAware {
 			 System.out.println("usao");
 			 double dcena = 0;
 
-			 if (donjaCena != null) {
+			 if (donjaCena != "") {
 			     dcena = Double.parseDouble(donjaCena);
 			 }
 			 
 			 double gcena = 0;
 
-			 if (gornjaCena != null) {
+			 if (gornjaCena != "") {
 			     gcena = Double.parseDouble(gornjaCena);
 			 }
 			 
 			 float fprosekOcena = 0;
 
-			 if (prosekOcena != null) {
+			 if (prosekOcena != "") {
 				 fprosekOcena= Float.parseFloat(prosekOcena);
 			 }
 
@@ -236,5 +254,30 @@ public class LekoviController implements ServletContextAware {
 		
 		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
 	}
+	
+	@SuppressWarnings("unused")
+	@PostMapping(value="/dodajUKorpu")
+	public void create(@RequestParam Long id, HttpSession session, HttpServletResponse response) throws IOException {	
+		Lek lek=lekService.findOne(id);
+		ArrayList<StavkaRacuna> listaStavki=(ArrayList<StavkaRacuna>) session.getAttribute("stavkeKorpe");
+		int i=0;
+		for(StavkaRacuna stavka:listaStavki) {
+			if(lek.getId()==stavka.getLek().getId()) {
+				stavka.setKolicina(stavka.getKolicina()+1);
+				stavka.setCena(stavka.getKolicina()*lek.getCena());
+				i=+1;
+			}
+		}
+		if(i==0) {
+			StavkaRacuna stavkaKorpe=new StavkaRacuna(lek,1,lek.getCena());
+			listaStavki.add(stavkaKorpe);
+		}
+		session.setAttribute("stavkeKorpe", listaStavki);
+		response.sendRedirect(bURL+"korpa"); 
+		
+	   
+	
+	}
+	
 	
 }

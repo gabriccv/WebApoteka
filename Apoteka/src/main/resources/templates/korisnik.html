@@ -10,8 +10,8 @@
 <body>
 	<ul>    
 	 		<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
-
-	 		<li><a href="korisnici"  th:text="#{korisnici}"></a></li>
+			<li><a href="lekovi"  th:text="#{lekovi}"></a></li>
+	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="korisnici"  th:text="#{korisnici}"></a></li>
 	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
  		  
  	</ul>  

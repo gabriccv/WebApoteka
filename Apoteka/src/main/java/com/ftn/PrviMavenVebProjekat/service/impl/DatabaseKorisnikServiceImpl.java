@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.PrviMavenVebProjekat.dao.KorisnikDAO;
 import com.ftn.PrviMavenVebProjekat.model.Korisnik;
+import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.service.KorisnikService;
 
 @Service
@@ -33,6 +34,11 @@ public class DatabaseKorisnikServiceImpl implements KorisnikService{
 	@Override
 	public List<Korisnik> findAll() {
 		return korisnikDAO.findAll();
+	}
+	
+	@Override
+	public List<Korisnik> findByQuery(String naziv,String uloga){
+		return korisnikDAO.findByQuery(naziv,uloga);
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ftn.PrviMavenVebProjekat.dao.KorisnikDAO;
 import com.ftn.PrviMavenVebProjekat.model.Korisnik;
+import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Uloga;
 import com.ftn.PrviMavenVebProjekat.service.UlogaService;
@@ -122,6 +123,32 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
 
+		return rowCallbackHandler.getKorisnici();
+	}
+	
+	@Override
+	public List<Korisnik> findByQuery(String naziv,String uloga){
+		String sql="SELECT k.* FROM korisnici k ,uloge u where ";
+		int i = 0;
+		if (naziv != null) {
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(k.ime like '%"+naziv+"%' )";
+			i=+1;
+			
+		}
+		if(uloga !=null){
+			if (i!=0) {
+				sql=sql+" and ";
+				
+			}
+			sql=sql+"(k.uloga=u.id and u.naziv like '%"+uloga+"%' ) ";
+			i=+1;
+		}
+		KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler);
 		return rowCallbackHandler.getKorisnici();
 	}
 	

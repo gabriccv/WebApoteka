@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,7 @@ import com.ftn.PrviMavenVebProjekat.model.Korisnik;
 import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Proizvodjac;
+import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
 import com.ftn.PrviMavenVebProjekat.model.Uloga;
 import com.ftn.PrviMavenVebProjekat.service.KorisnikService;
 import com.ftn.PrviMavenVebProjekat.service.UlogaService;
@@ -151,16 +153,25 @@ public class KorisnikController implements ServletContextAware {
 //		}
 		
 		Korisnik korisnik = korisnikService.findOne(email, lozinka);
+		String greska = "";
 		  if (korisnik == null) {
-			  System.out.println("ovde");
+			  greska = "neispravni kredencijali";;
 		  }
 		  
-		  session.setAttribute("korisnik", korisnik);
+		  
+		  
+		  else{
+			  session.setAttribute("korisnik", korisnik);
+		  }
+		  ArrayList<StavkaRacuna> stavkeKorpe=new ArrayList<StavkaRacuna>();
+
+		  session.setAttribute("stavkeKorpe", stavkeKorpe);
 		  
 		  response.sendRedirect(bURL + "lekovi");
 		  
 			System.out.println(korisnik.getUloga().getNaziv());
 
+			
 //		session.setAttribute(KORISNIK_KEY, korisnik);
 //
 //		response.sendRedirect(bURL + "lekovi");
@@ -221,6 +232,7 @@ public class KorisnikController implements ServletContextAware {
 //		
 //		request.getSession().removeAttribute(KORISNIK_KEY);
 //		request.getSession().invalidate();
+		session.removeAttribute("stavkeKorpe");
 		session.removeAttribute("korisnik");
 		  
 		response.sendRedirect(bURL+"");
@@ -246,12 +258,20 @@ public class KorisnikController implements ServletContextAware {
 		Korisnik korisnik = new Korisnik(korisnickoIme,lozinka, email, ime,prezime,datumRodjenja,adresa,brojTelefona,datumIVremeRegistracije);
 		korisnikService.save(korisnik);
 		
-		response.sendRedirect(bURL + "korisnici");
+		response.sendRedirect(bURL + "");
 	}
 	
 	@GetMapping
-	public ModelAndView index() {
-		List<Korisnik> korisnici = korisnikService.findAll();
+	public ModelAndView index(@RequestParam (required=false) String naziv,@RequestParam (required=false) String uloga,HttpSession session) {
+		List<Korisnik> korisnici=new ArrayList<Korisnik>();
+		 if(naziv==null && uloga==null) {
+			 korisnici = korisnikService.findAll();
+		 }
+		 else {
+			 korisnici = korisnikService.findByQuery(naziv,uloga);
+
+		 }
+		
 		ModelAndView rezultat = new ModelAndView("korisnici"); // naziv template-a
 		rezultat.addObject("korisnici", korisnici);
 		// podatak koji se šalje template-u
@@ -290,16 +310,9 @@ public class KorisnikController implements ServletContextAware {
 				korisnik.setUloga(uloga);
 			}
 			
-				
-			
-
-
-				
-			
-			
 		}
 		Korisnik saved = korisnikService.update(korisnik);
-		response.sendRedirect(bURL+"korisnici");
+		response.sendRedirect(bURL+"lekovi");
 	}
 	
 //	@GetMapping

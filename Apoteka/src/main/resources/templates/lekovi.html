@@ -15,7 +15,8 @@
 		    $("#locales").change(function () {
 		        var selectedOption = $('#locales').val();
 		        if (selectedOption != ''){
-		            window.location.replace('international?lang=' + selectedOption);
+		        	
+		            window.location.replace(window.location.pathname+'?lang=' + selectedOption);
 		        }
 		    });
 		});
@@ -25,39 +26,63 @@
 <!-- 	 	</table> -->
 	 	<ul>     
 	 		<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
-	 		<li><a href="kategorijeLekova"  th:text="#{kategorije_lekova}"></a></li> 
+	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="kategorijeLekova"  th:text="#{kategorije_lekova}"></a></li> 
 	 		<li><a href="lekovi"  th:text="#{lekovi}"></a></li>   
-	 		<li><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
+	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
 	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="korisnici"  th:text="#{korisnici}"></a></li>
-	 		
 	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
  		  
 	 		  
 	 	</ul>  
-<!-- 	 	<form method="get"> -->
-<!-- <!-- 			<table class="tabela"> --> -->
-<!-- 			<table> -->
-<!-- 				<caption>Lekovi</caption> -->
-<!-- 				<tr> -->
-<!-- 					<th>r. br.</th> -->
-<!-- 					<th>naziv</th> -->
-<!-- 					<th>žanr</th> -->
-<!-- 					<th>trajanje</th> -->
-<!-- 					<th></th> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-				
+ 	
 			<form method="get" action="lekovi">
 				<table>
 					<tr>
 						<th th:text="#{naziv}">:</th>
 						<th th:text="#{kontraindikacije}"></th>
+						<th th:text="#{kategorije_lekova}"></th>
+						<th th:text="#{proizvodjac}"></th>
+						<th th:text="#{gornjaCena}"></th>
+						<th th:text="#{donjaCena}"></th>
+						<th th:text="#{opis}"></th>
+						<th th:text="#{oblik}"></th>
+						<th th:text="#{prosek_ocena}"></th>
+						
 					</tr>
 					<tr>
-						<td><input type="text"  name="naziv"/></td></tr>
-						<td><input type="text"  name="kontraindikacije"/></td></tr>
+						<td><input type="text"  name="naziv"/></td>
+						<td><input type="text"  name="kontraindikacije"/></td>
+						<td><select name="kategorijaLeka">
+								<option value="" ></option>
+								<option value="panadol" >panadol</option>
+								
+							</select></td>
+						<td><select name="proizvodjac">
+								<option value="" ></option>
+								<option value="Mika" >Mika</option>
+								<option value="Zika" >Zika</option>
+							</select></td>
+						
+						<td><input type="text"  name="gornjaCena"/></td>
+						<td><input type="text"  name="donjaCena"/></td>
+						<td><input type="text"  name="opis"/></td>
+						<td><select name="oblik">
+								<option value="" ></option>
+								<option value="TABLETA" >TABLETA</option>
+								<option value="KAPSULA" >KAPSULA</option>
+								<option value="SIRUP" >SIRUP</option>
+								<option value="INJEKCIJA" >INJEKCIJA</option>
+								
+<!-- 		    					<option th:each="item : ${oblici}" -->
+<!-- 		    						 th:value="${item.naziv}"  -->
+<!-- 		    						 th:selected="*{item.id}==3" -->
+<!-- 		    						 th:text="${item.naziv}"> -->
+<!-- 		    					</option> -->
+							</select></td>
+						<td><input type="text"  name="prosekOcena"/></td>
+						
 					</tr>
-					<tr><th></th><td><input type="submit" th:value="#{pretrazi}"/></td> 
+					<tr><th></th><td><input type="submit" th:value="#{pretrazi}"/></td></tr> 
 				</table>
 			</form>
 				
@@ -104,15 +129,21 @@
 	 				<td th:text="${itLek.cena}"></td>
 	 				<td th:text="${itLek.proizvodjac.naziv}"></td>
 	 				<td th:text="${itLek.kategorijaLekova.naziv}"></td>
-	 				<td>    
+	 				<td th:if="${session.korisnik != null && session.korisnik.uloga.naziv !='KUPAC'}">    
 	 					<form method="post" action="lekovi/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itLek.id}">     
 	 						<input type="submit"  th:value="#{obrisi}"  >    
 	 					</form>    
+	 				</td>
+	 				<td th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='KUPAC'}">    
+	 					<form method="post" action="lekovi/dodajUKorpu" >     
+	 						<input type="hidden"  name="id"  th:value="${itLek.id}">     
+	 						<input type="submit"  th:value="#{dodaj_u_korpu}"  >    
+	 					</form>    
 	 				</td>   
 	 			</tr>
 	 		</table>
-	 	<ul>     
+	 	<ul th:if="${session.korisnik != null && session.korisnik.uloga.naziv !='KUPAC'}">     
 	 		<li><a href="lekovi/add" th:text="#{dodaj_lek}"></a></li>     
 	 	</ul>
 	 	
