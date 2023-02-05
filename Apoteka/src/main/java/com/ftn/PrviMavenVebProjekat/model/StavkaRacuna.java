@@ -6,9 +6,6 @@ public class StavkaRacuna{
 	private Lek lek;
 	private int kolicina;
 	private double cena;
-	public StavkaRacuna() {
-		
-	}
 	public StavkaRacuna( Racun racun, Lek lek, int kolicina, double cena) {
 		super();
 	

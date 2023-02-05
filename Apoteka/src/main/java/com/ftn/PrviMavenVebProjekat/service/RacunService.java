@@ -1,5 +1,6 @@
 package com.ftn.PrviMavenVebProjekat.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface RacunService {
 	ArrayList <Racun> findAll();
 	int sacuvajStavku(StavkaRacuna stavka);
 	List<Racun> findByUser(Long id);
+	List<StavkaRacuna> izvestaj(Date pocetniDatum,Date krajnjiDatum);
 }

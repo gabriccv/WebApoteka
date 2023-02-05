@@ -21,10 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ftn.PrviMavenVebProjekat.dao.RacunDAO;
 import com.ftn.PrviMavenVebProjekat.model.Korisnik;
+import com.ftn.PrviMavenVebProjekat.model.Lek;
 import com.ftn.PrviMavenVebProjekat.model.Oblik;
 import com.ftn.PrviMavenVebProjekat.model.Racun;
 import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
 import com.ftn.PrviMavenVebProjekat.service.KorisnikService;
+import com.ftn.PrviMavenVebProjekat.service.LekService;
 import com.ftn.PrviMavenVebProjekat.service.ProizvodjacService;
 
 @Repository
@@ -34,6 +36,9 @@ public class RacunDAOImpl implements RacunDAO{
 	
 	@Autowired
 	private KorisnikService korisnikService;
+	
+	@Autowired
+	private LekService lekService;
 	
 	private class RacunRowCallBackHandler implements RowCallbackHandler {
 
@@ -60,6 +65,34 @@ public class RacunDAOImpl implements RacunDAO{
 //
 		public List<Racun> getRacuni() {
 			return new ArrayList<>(racuni.values());
+		}
+//
+	}
+	private class IzvestajRowCallBackHandler implements RowCallbackHandler {
+
+		private Map<Long, StavkaRacuna> stavke = new LinkedHashMap<>();
+		
+		@Override
+		public void processRow(ResultSet resultSet) throws SQLException {
+			int index = 1;
+			Long id = resultSet.getLong(index++);
+			Long lekId = resultSet.getLong(index++);
+			Lek lek= lekService.findOne(lekId);
+			int kolicina = resultSet.getInt(index++);
+			Double cena = resultSet.getDouble(index++);
+			
+
+
+			StavkaRacuna stavka = stavke.get(id);
+			if (stavka == null) {
+				stavka = new StavkaRacuna(lek,kolicina,cena);
+				stavka.setId(id);
+				stavke.put(stavka.getId(), stavka); // dodavanje u kolekciju
+			}
+		}
+//
+		public List<StavkaRacuna> getStavkeRacuna() {
+			return new ArrayList<>(stavke.values());
 		}
 //
 	}
@@ -137,6 +170,19 @@ public class RacunDAOImpl implements RacunDAO{
 		jdbcTemplate.query(sql, rowCallbackHandler, id);
 
 		return (ArrayList<Racun>) rowCallbackHandler.getRacuni();
+	}
+
+	@Override
+	public ArrayList<StavkaRacuna> izvestaj(Date pocetniDatum, Date krajnjiDatum) {
+		String sql = "SELECT s.id, s.lek, s.kolicina, s.cena from stavkaRacuna s  LEFT JOIN racun r ON (r.id=s.racun)";
+		if(pocetniDatum !=null && krajnjiDatum!=null) {
+			sql+= " Where r.datum between "+pocetniDatum+" and "+krajnjiDatum;
+		}
+		
+		System.out.println(sql);
+		IzvestajRowCallBackHandler rowCallbackHandler = new IzvestajRowCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler);
+		return (ArrayList<StavkaRacuna>) rowCallbackHandler.getStavkeRacuna();
 	}
 	
 }

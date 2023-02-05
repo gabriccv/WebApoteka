@@ -1,13 +1,14 @@
 package com.ftn.PrviMavenVebProjekat.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Racun{
 	private Long id;
 	private Korisnik korisnik;
 	private double cena;
 	private Date datum;
-	
+	private ArrayList<StavkaRacuna> stavke;
 	
 	
 	public Racun() {
@@ -87,6 +88,17 @@ public class Racun{
 
 	public void setDatum(Date datum) {
 		this.datum = datum;
+	}
+
+	
+	public ArrayList<StavkaRacuna> getStavke() {
+		return stavke;
+	}
+
+
+
+	public void setStavke(ArrayList<StavkaRacuna> stavke) {
+		this.stavke = stavke;
 	}
 	
 }

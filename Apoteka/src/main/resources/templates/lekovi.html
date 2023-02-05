@@ -31,7 +31,8 @@
 	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
 	 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="korisnici"  th:text="#{korisnici}"></a></li>
 	 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
- 		  
+ 		  	<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="izvestaji"  th:text="#{izvestaj}"></a></li>
+	 		
 	 		  
 	 	</ul>  
  	

@@ -1,19 +1,14 @@
 package com.ftn.PrviMavenVebProjekat.service.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ftn.PrviMavenVebProjekat.dao.KategorijaLekovaDAO;
-import com.ftn.PrviMavenVebProjekat.dao.ProizvodjacDAO;
 import com.ftn.PrviMavenVebProjekat.dao.RacunDAO;
-import com.ftn.PrviMavenVebProjekat.model.KategorijaLekova;
 import com.ftn.PrviMavenVebProjekat.model.Racun;
 import com.ftn.PrviMavenVebProjekat.model.StavkaRacuna;
-import com.ftn.PrviMavenVebProjekat.service.KategorijaLekovaService;
 import com.ftn.PrviMavenVebProjekat.service.RacunService;
 
 
@@ -37,6 +32,9 @@ public class DatabaseRacunServiceImpl implements RacunService {
 	
 	public int sacuvajStavku(StavkaRacuna stavka) {
 		return racunDAO.sacuvajStavku(stavka);
+	};
+	public ArrayList<StavkaRacuna> izvestaj(Date pocetniDatum,Date krajnjiDatum){
+		return racunDAO.izvestaj(pocetniDatum,krajnjiDatum);
 	};
 	
 	

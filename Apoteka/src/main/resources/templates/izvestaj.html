@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+		<title>Izvestaj</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+		</script>
+	 </head>     
+	 <body> 
+		 <ul>     
+		 		<li><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a> O meni</li>
+		 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="kategorijeLekova"  th:text="#{kategorije_lekova}"></a></li> 
+		 		<li><a href="lekovi"  th:text="#{lekovi}"></a></li>   
+		 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="proizvodjaci"  th:text="#{proizvodjaci}"></a></li>
+		 		<li th:if="${session.korisnik != null && session.korisnik.uloga.naziv =='ADMINISTRATOR'}"><a href="korisnici"  th:text="#{korisnici}"></a></li>
+		 		<li><a href="korisnici/logout"  th:text="#{odjava}"></a></li>
+	 		  
+		 		  
+		 	</ul>  
+		 	
+		 	<form method="get" action="izvestaji">
+				<table>
+					<tr>
+						<th th:text="#{pocetniDatum}">:</th>
+						<th th:text="#{krajnjiDatum}"></th>
+						
+					</tr>
+					<tr>
+						<td><input type="text"  name="spocetniDatum"/></td>
+						<td><input type="text"  name="skrajnjiDatum"/></td>
+						
+					<tr><th></th><td><input type="submit" th:value="#{pretrazi}"/></td></tr> 
+				</table>
+			</form>
+			<table>     
+	 			<caption th:text="#{izvestaj}"></caption>     
+	 			<tr>     
+	 				<th th:text="#{broj}"></th>     
+	 				<th></th>     
+	 				<th th:text="#{naziv_leka}"></th>     
+	 				<th th:text="#{proizvodjac}"></th>     
+	 				<th th:text="#{kolicina_kupljenog_leka}"></th>    
+	 				<th th:text="#{cena_jednog_leka}"></th> 
+	 				<th th:text="#{ukupna_cena}"></th> 
+	 				
+	 				<th></th>    
+	 			</tr>
+	 			<tr th:each="stavka, status: ${stavkeRacuna}">     
+	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
+	 				<td><a th:href="|lekovi/details?id=${stavka.lek.id}|" th:text="${stavka.lek.naziv}"></a></td>    
+	 				<td th:text="${stavka.lek.naziv}"></td>    
+	 				<td th:text="${stavka.lek.proizvodjac.naziv}"></td>    
+	 				<td th:text="${stavka.kolicina}"></td>   
+	 				<td th:text="${stavka.lek.cena}"></td> 
+	 				<td th:text="${stavka.cena}"></td>
+	 			</tr>
+	 		</table>
+	 	</body>
+	 </html>
+	 				
